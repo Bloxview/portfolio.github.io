@@ -1,69 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Aden Seven Anderson</title>
 
   <style>
-    /* Load custom font */
+    /* ------------------------------
+       FONTS
+    ------------------------------ */
+
     @font-face {
       font-family: "AldynHeart";
       src: url("Aldyn Heart Italic.ttf") format("truetype");
-      font-style: italic;
-      font-weight: normal;
     }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: #f7f7f7;
-      color: #111;
+      background: #ffffff;
+      color: #000;
+      font-family: Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
     }
 
-    header {
+    /* ------------------------------
+       COLOR VARIABLES
+    ------------------------------ */
+
+    :root {
+      --pink: #ff2f92;
+      --black: #000000;
+      --white: #ffffff;
+    }
+
+    /* ------------------------------
+       HERO / COVER
+    ------------------------------ */
+
+    .hero {
       min-height: 100vh;
+      padding: 3rem;
+      position: relative;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .name {
-      font-size: clamp(4rem, 10vw, 8rem);
-      font-weight: 800;
-      text-align: center;
-      line-height: 1.1;
+      font-family: "AldynHeart", serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.95;
       letter-spacing: -0.03em;
+      max-width: 90%;
     }
 
-    .middle-name {
-      font-family: "AldynHeart", cursive;
-      font-weight: normal;
-      padding: 0 0.2em;
+    .name span {
+      display: inline-block;
+      transform: translateY(0.1em);
     }
 
-    /* Optional subtitle */
-    .subtitle {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      color: #666;
-      letter-spacing: 0.1em;
+    /* Slight “imperfect” cut-off feel */
+    .name::after {
+      content: "";
+      position: absolute;
+      right: -20%;
+      top: 25%;
+      width: 40%;
+      height: 3px;
+      background: var(--pink);
+    }
+
+    /* ------------------------------
+       METADATA (BOTTOM INFO)
+    ------------------------------ */
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .meta a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .meta a:hover {
+      color: var(--pink);
+    }
+
+    /* ------------------------------
+       SECTION BREAK (PINK JOLT)
+    ------------------------------ */
+
+    .break {
+      height: 60vh;
+      background: var(--pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-family: "AldynHeart", serif;
+    }
+
+    /* Subtle polka-dot texture */
+    .break {
+      background-image:
+        radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    /* ------------------------------
+       PROJECT LIST
+    ------------------------------ */
+
+    .projects {
+      padding: 6rem 3rem;
+    }
+
+    .project {
+      margin-bottom: 4rem;
+      max-width: 600px;
+    }
+
+    .project-title {
+      font-size: 2.5rem;
+      font-family: "AldynHeart", serif;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+
+    .project-title:hover {
+      background: var(--pink);
+      color: white;
+      padding-left: 0.5rem;
+    }
+
+    .project-desc {
+      font-family: "Courier New", monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* ------------------------------
+       STICKY FOOTER NAME
+    ------------------------------ */
+
+    .sticky-footer {
+      position: sticky;
+      bottom: 0;
+      background: white;
+      border-top: 1px solid black;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
     }
   </style>
 </head>
+
 <body>
 
-  <header>
-    <div>
-      <div class="name">
-        Aden <span class="middle-name">Seven</span> Anderson
-      </div>
-      <div class="subtitle">
-        Portfolio
+  <!-- HERO / COVER -->
+  <section class="hero">
+    <div class="name">
+      Aden <span>Seven</span><br />
+      Anderson
+    </div>
+
+    <div class="meta">
+      <div>Portfolio / Issue 01</div>
+      <div><a href="#">Contact</a></div>
+    </div>
+  </section>
+
+  <!-- PINK JOLT -->
+  <section class="break">
+    Full-time lover of type & tension
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects">
+    <div class="project">
+      <div class="project-title">Untitled Experiment 001</div>
+      <div class="project-desc">
+        A study in imbalance, contrast, and refusal to align.
+        Built like a confession, not a presentation.
       </div>
     </div>
-  </header>
+
+    <div class="project">
+      <div class="project-title">Printed Noise</div>
+      <div class="project-desc">
+        Web as magazine. Design as misprint.
+        Nothing is centered on purpose.
+      </div>
+    </div>
+  </section>
+
+  <!-- STICKY FOOTER -->
+  <div class="sticky-footer">
+    <div>Aden Seven Anderson</div>
+    <div>2026</div>
+  </div>
 
 </body>
 </html>
