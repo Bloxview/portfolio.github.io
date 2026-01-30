@@ -1,227 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Aden Anderson — Tactile Techno-Maximalism</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Google Font (Brutalist base, swap later for distressed custom font) -->
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Aden Anderson — Portfolio</title>
 
   <style>
-    :root {
-      --asphalt: #0d0d0d;
-      --white: #f5f5f5;
-      --paper: #f2e8c9;
-      --pink: #ff00ff;
-      --lime: #ccff00;
-      --blue: #0000ff;
-    }
-
+    /* RESET */
     * {
       box-sizing: border-box;
-    }
-
-    html, body {
       margin: 0;
       padding: 0;
-      background: var(--asphalt);
-      color: var(--white);
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
     }
 
-    /* --- FILM GRAIN OVERLAY --- */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-      z-index: 999;
+    body {
+      font-family: Helvetica, Arial, sans-serif;
+      background: #ffffff;
+      color: #000;
+      line-height: 1.2;
     }
 
-    /* --- TICKER NAV --- */
-    .ticker {
-      position: fixed;
-      bottom: 20px;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-      z-index: 100;
-      font-family: 'Archivo Black', sans-serif;
-      font-size: 14px;
+    /* GLOBAL GRID */
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 80px;
+    }
+
+    /* NAVIGATION — DIGITAL CATALOG */
+    .nav {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      gap: 40px;
+      margin-bottom: 120px;
+      font-size: 12px;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .ticker span {
-      display: inline-block;
-      white-space: nowrap;
-      padding-left: 100%;
-      animation: ticker 20s linear infinite;
-      color: var(--paper);
-    }
-
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to { transform: translateX(-100%); }
-    }
-
-    /* --- HERO --- */
-    .hero {
-      min-height: 100vh;
-      padding: 80px 40px;
-      position: relative;
-    }
-
-    .hero h1 {
-      font-family: 'Archivo Black', sans-serif;
-      font-size: clamp(4rem, 14vw, 12rem);
-      line-height: 0.9;
-      margin: 0;
-      color: var(--white);
-    }
-
-    .hero h1 span {
-      color: var(--pink);
-    }
-
-    .hero p {
-      max-width: 500px;
-      margin-top: 30px;
-      font-size: 1rem;
-      color: var(--paper);
-    }
-
-    /* --- STACKED PROJECTS --- */
-    .stack {
-      position: relative;
-      padding: 200px 0;
-    }
-
-    .project {
-      width: 80%;
-      margin: 0 auto 200px;
-      padding: 60px;
-      position: sticky;
-      top: 80px;
-      background: #111;
-      border: 2px solid var(--white);
-      mix-blend-mode: screen;
-      transition: transform 0.4s ease, filter 0.4s ease;
-    }
-
-    .project:nth-child(2) {
-      background: var(--blue);
-    }
-
-    .project:nth-child(3) {
-      background: var(--pink);
+    .nav a {
+      text-decoration: none;
       color: #000;
     }
 
-    .project h2 {
-      font-family: 'Archivo Black', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 6rem);
-      margin: 0 0 20px;
+    .nav a:hover {
+      text-decoration: underline;
     }
 
-    .project p {
-      max-width: 500px;
-      font-size: 0.95rem;
+    /* TITLE */
+    .title {
+      font-size: 72px;
+      font-weight: 700;
+      margin-bottom: 100px;
+      max-width: 900px;
     }
 
-    /* --- GLITCH HOVER --- */
-    .project:hover {
-      filter: invert(1) contrast(2);
-      transform: translate(-10px, -10px);
+    /* PROJECT SECTION */
+    .project {
+      margin-bottom: 160px;
     }
 
-    /* --- PHILOSOPHY --- */
-    .philosophy {
-      padding: 160px 40px;
-      font-family: 'Archivo Black', sans-serif;
-      font-size: clamp(2rem, 6vw, 5rem);
-      line-height: 1.1;
-      color: var(--lime);
+    /* 2x2 IMAGE GRID — HIGH CONTRAST */
+    .image-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
     }
 
-    .philosophy blockquote {
-      margin: 0;
+    .image-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #f2f2f2;
     }
 
-    .philosophy span {
-      color: var(--white);
+    /* METADATA FOOTER */
+    .metadata {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-top: 1px solid #000;
+      padding-top: 20px;
+    }
+
+    .metadata span {
       display: block;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
-      margin-top: 30px;
-      max-width: 600px;
     }
 
-    /* --- FOOTER --- */
-    footer {
-      padding: 80px 40px;
-      font-size: 0.9rem;
-      color: var(--paper);
+    /* PHILOSOPHY */
+    .philosophy {
+      margin-top: 200px;
+      max-width: 700px;
     }
 
+    .philosophy h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .philosophy p {
+      font-size: 14px;
+    }
+
+    /* RESPONSIVE (KEEP IT RIGID) */
+    @media (max-width: 900px) {
+      .page {
+        padding: 40px;
+      }
+
+      .title {
+        font-size: 48px;
+      }
+
+      .image-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metadata {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <section class="hero">
-    <h1>ADEN<br><span>ANDERSON</span></h1>
-    <p>
-      Design that treats the browser like a city wall — layered, loud,
-      unfinished, and alive.
-    </p>
-  </section>
+  <div class="page">
 
-  <section class="stack">
-    <div class="project">
-      <h2>PROJECT ONE</h2>
+    <!-- NAV -->
+    <nav class="nav">
+      <a href="#">Photography</a>
+      <a href="#">Branding</a>
+      <a href="#">2025</a>
+      <a href="#">Info</a>
+    </nav>
+
+    <!-- TITLE -->
+    <h1 class="title">
+      Aden Anderson<br>
+      Order in the Chaos
+    </h1>
+
+    <!-- PROJECT -->
+    <section class="project">
+
+      <!-- IMAGES -->
+      <div class="image-grid">
+        <img src="image-1.jpg" alt="Flash portrait">
+        <img src="image-2.jpg" alt="Flash portrait">
+        <img src="image-3.jpg" alt="Flash portrait">
+        <img src="image-4.jpg" alt="Flash portrait">
+      </div>
+
+      <!-- METADATA -->
+      <div class="metadata">
+        <span>Project: Editorial Study</span>
+        <span>Year: 2025</span>
+        <span>Medium: Photography</span>
+        <span>Made with: iPhone</span>
+      </div>
+
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="philosophy">
+      <h2>Order in the Chaos.</h2>
       <p>
-        A collision of street texture and digital precision.
-        Posters, pixels, noise.
+        Aden Anderson designs with the cold precision of a corporation
+        and the reckless spirit of a basement party. Raw moments,
+        pinned to a clean white wall. No filters. No fluff.
+        Just the work, the grid, and the truth.
       </p>
-    </div>
+    </section>
 
-    <div class="project">
-      <h2>PROJECT TWO</h2>
-      <p>
-        Brutalist typography bleeding off the grid.
-        Nothing centered. Nothing polite.
-      </p>
-    </div>
-
-    <div class="project">
-      <h2>PROJECT THREE</h2>
-      <p>
-        Maximal color, minimal restraint.
-        Built to vibrate, not behave.
-      </p>
-    </div>
-  </section>
-
-  <section class="philosophy">
-    <blockquote>
-      “Design is a collision, not a calculation.”
-    </blockquote>
-    <span>
-      This portfolio treats the web like a physical surface — pasted,
-      scratched, overwritten, and always in motion.
-    </span>
-  </section>
-
-  <footer>
-    © Aden Anderson — Never finished.
-  </footer>
-
-  <div class="ticker">
-    <span>
-      WORK • PROJECTS • PROCESS • CONTACT • WORK • PROJECTS • PROCESS • CONTACT •
-    </span>
   </div>
 
 </body>
