@@ -1,278 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Aden Seven Anderson</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aden Seven Anderson</title>
 
-  <style>
-    /* ------------------------------
-       FONTS
-    ------------------------------ */
+<style>
+/* ------------------------------
+   FONTS
+------------------------------ */
+@font-face {
+  font-family: "AldynHeart";
+  src: url("Aldyn Heart Italic.ttf") format("truetype");
+}
 
-    @font-face {
-      font-family: "AldynHeart";
-      src: url("Aldyn Heart Italic.ttf") format("truetype");
-    }
+/* ------------------------------
+   VARIABLES
+------------------------------ */
+:root {
+  --pink: #ff2f92;
+  --black: #000;
+  --white: #fff;
+}
 
-    /* ------------------------------
-       COLOR SYSTEM (EDITORIAL)
-    ------------------------------ */
+/* ------------------------------
+   BASE
+------------------------------ */
+* {
+  box-sizing: border-box;
+}
 
-    :root {
-      --ink-black: #0a0a0a;
-      --paper-white: #fafafa;
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
 
-      /* Accent colors */
-      --notepad-pink: #ff9ecf;
-      --hot-pink: #ff2f92;
-      --acid-lime: #c9ff2f;
-      --cyan-ink: #2fd4ff;
-      --warm-yellow: #ffe86b;
-    }
+/* ------------------------------
+   GRAIN / NOISE OVERLAY
+------------------------------ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-radial-gradient(circle at 0 0,
+      rgba(0,0,0,0.06),
+      rgba(0,0,0,0.06) 1px,
+      transparent 1px,
+      transparent 2px);
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  z-index: 999;
+}
 
-    body {
-      margin: 0;
-      background: var(--paper-white);
-      color: var(--ink-black);
-      font-family: Helvetica, Arial, sans-serif;
-      overflow-x: hidden;
-    }
+/* ------------------------------
+   LOAD MESSAGE
+------------------------------ */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: "Courier New", monospace;
+  letter-spacing: 0.15em;
+  font-size: 0.9rem;
+  animation: fadeOut 1s ease forwards;
+  animation-delay: 2.2s;
+}
 
-    /* ------------------------------
-       GLOBAL GRAIN / NOISE
-    ------------------------------ */
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 999;
-      opacity: 0.08;
-      background-image:
-        repeating-radial-gradient(
-          circle at 0 0,
-          rgba(0,0,0,0.25),
-          rgba(0,0,0,0.25) 1px,
-          transparent 1px,
-          transparent 2px
-        );
-      mix-blend-mode: multiply;
-    }
+/* ------------------------------
+   HERO
+------------------------------ */
+.hero {
+  min-height: 100vh;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    /* ------------------------------
-       HERO / COVER
-    ------------------------------ */
+.name {
+  font-family: "AldynHeart", serif;
+  font-size: clamp(3.5rem, 12vw, 9rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
 
-    .hero {
-      min-height: 100vh;
-      padding: 3rem;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+.since {
+  margin-top: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
 
-    .name-block {
-      position: relative;
-      max-width: 90%;
-    }
+/* ------------------------------
+   META
+------------------------------ */
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
 
-    .name {
-      font-family: "AldynHeart", serif;
-      font-size: clamp(4rem, 12vw, 10rem);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-    }
+/* ------------------------------
+   PINK BREAK
+------------------------------ */
+.break {
+  min-height: 60vh;
+  background: var(--pink);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "AldynHeart", serif;
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  text-align: center;
+  padding: 2rem;
+}
 
-    .since {
-      margin-top: 1rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      font-family: Helvetica, Arial, sans-serif;
-    }
+/* ------------------------------
+   PROJECTS
+------------------------------ */
+.projects {
+  padding: 5rem 2.5rem;
+}
 
-    /* Imperfect editorial underline */
-    .name-block::after {
-      content: "";
-      position: absolute;
-      left: -10%;
-      bottom: -1.5rem;
-      width: 120%;
-      height: 6px;
-      background: linear-gradient(
-        90deg,
-        var(--notepad-pink),
-        var(--cyan-ink),
-        var(--acid-lime)
-      );
-      opacity: 0.8;
-    }
+.project {
+  max-width: 650px;
+  margin-bottom: 4rem;
+}
 
-    /* ------------------------------
-       METADATA
-    ------------------------------ */
+.project-title {
+  font-family: "AldynHeart", serif;
+  font-size: 2.2rem;
+  cursor: pointer;
+}
 
-    .meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-    }
+.project-title:hover {
+  background: var(--pink);
+  color: white;
+  padding-left: 0.5rem;
+}
 
-    .meta a {
-      text-decoration: none;
-      color: var(--ink-black);
-    }
+.project-desc {
+  font-family: "Courier New", monospace;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
 
-    .meta a:hover {
-      color: var(--hot-pink);
-    }
+/* ------------------------------
+   INTERACTIVE VISUAL
+------------------------------ */
+.cursor-orb {
+  position: fixed;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--pink);
+  opacity: 0.15;
+  filter: blur(30px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
 
-    /* ------------------------------
-       COLOR JOLT SECTIONS
-    ------------------------------ */
+/* Mobile: disable orb hover lag */
+@media (max-width: 768px) {
+  .cursor-orb {
+    display: none;
+  }
+}
 
-    .break {
-      height: 60vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "AldynHeart", serif;
-      font-size: 2.2rem;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .pink {
-      background: var(--notepad-pink);
-    }
-
-    .yellow {
-      background: var(--warm-yellow);
-    }
-
-    .cyan {
-      background: var(--cyan-ink);
-    }
-
-    /* Polka-dot print texture */
-    .break {
-      background-image:
-        radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px);
-      background-size: 18px 18px;
-    }
-
-    /* ------------------------------
-       PROJECTS
-    ------------------------------ */
-
-    .projects {
-      padding: 6rem 3rem;
-    }
-
-    .project {
-      margin-bottom: 5rem;
-      max-width: 620px;
-    }
-
-    .project-title {
-      font-size: 2.6rem;
-      font-family: "AldynHeart", serif;
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-    .project-title:hover {
-      background: linear-gradient(
-        90deg,
-        var(--hot-pink),
-        var(--cyan-ink)
-      );
-      color: white;
-      padding: 0.1em 0.4em;
-    }
-
-    .project-desc {
-      font-family: "Courier New", monospace;
-      font-size: 0.85rem;
-      line-height: 1.6;
-    }
-
-    /* ------------------------------
-       STICKY FOOTER
-    ------------------------------ */
-
-    .sticky-footer {
-      position: sticky;
-      bottom: 0;
-      background: var(--paper-white);
-      border-top: 1px solid var(--ink-black);
-      padding: 0.75rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-  </style>
+/* ------------------------------
+   STICKY FOOTER
+------------------------------ */
+.sticky-footer {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid black;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="name-block">
-      <div class="name">
-        Aden Seven<br />
-        Anderson
-      </div>
-      <div class="since">
-        since 05 / 12 / 2010
-      </div>
+<!-- LOAD MESSAGE -->
+<div class="loader">
+  like what u see? you should scroll
+</div>
+
+<!-- INTERACTIVE ORB -->
+<div class="cursor-orb" id="orb"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="name">
+      Aden Seven<br>Anderson
     </div>
-
-    <div class="meta">
-      <div>Portfolio · Issue 01</div>
-      <div><a href="#">Contact</a></div>
+    <div class="since">
+      since 05 / 12 / 2010
     </div>
-  </section>
-
-  <!-- COLOR BREAKS -->
-  <section class="break pink">
-    Full-time lover of contrast & chaos
-  </section>
-
-  <section class="break cyan">
-    Web as zine, not as product
-  </section>
-
-  <!-- PROJECTS -->
-  <section class="projects">
-    <div class="project">
-      <div class="project-title">Untitled Experiment 001</div>
-      <div class="project-desc">
-        Design that refuses symmetry.
-        Built like a margin note, not a headline.
-      </div>
-    </div>
-
-    <div class="project">
-      <div class="project-title">Printed Noise</div>
-      <div class="project-desc">
-        Digital work pretending it was photocopied too many times.
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <div class="sticky-footer">
-    <div>Aden Seven Anderson</div>
-    <div>2026</div>
   </div>
+
+  <div class="meta">
+    <div>Portfolio · Issue 01</div>
+    <div>Scroll ↓</div>
+  </div>
+</section>
+
+<!-- BREAK -->
+<section class="break">
+  design that refuses to sit still
+</section>
+
+<!-- PROJECTS -->
+<section class="projects">
+  <div class="project">
+    <div class="project-title">Untitled Experiment 001</div>
+    <div class="project-desc">
+      Built like a zine spread.
+      Typography first. Balance last.
+    </div>
+  </div>
+
+  <div class="project">
+    <div class="project-title">Printed Noise</div>
+    <div class="project-desc">
+      The web as misprint.
+      Editorial tension over polish.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="sticky-footer">
+  <div>Aden Seven Anderson</div>
+  <div>2026</div>
+</div>
+
+<script>
+/* ------------------------------
+   CURSOR INTERACTION
+------------------------------ */
+const orb = document.getElementById("orb");
+
+window.addEventListener("mousemove", e => {
+  orb.style.left = e.clientX + "px";
+  orb.style.top = e.clientY + "px";
+});
+</script>
 
 </body>
 </html>
