@@ -2,181 +2,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Aden Anderson — Portfolio</title>
+  <title>Aden Seven Anderson</title>
 
   <style>
-    /* RESET */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    /* Load custom font */
+    @font-face {
+      font-family: "AldynHeart";
+      src: url("Aldyn Heart Italic.ttf") format("truetype");
+      font-style: italic;
+      font-weight: normal;
     }
 
     body {
-      font-family: Helvetica, Arial, sans-serif;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: #f7f7f7;
+      color: #111;
+    }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: #ffffff;
-      color: #000;
-      line-height: 1.2;
     }
 
-    /* GLOBAL GRID */
-    .page {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 80px;
+    .name {
+      font-size: clamp(4rem, 10vw, 8rem);
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
     }
 
-    /* NAVIGATION — DIGITAL CATALOG */
-    .nav {
-      display: grid;
-      grid-template-columns: repeat(4, auto);
-      gap: 40px;
-      margin-bottom: 120px;
-      font-size: 12px;
+    .middle-name {
+      font-family: "AldynHeart", cursive;
+      font-weight: normal;
+      padding: 0 0.2em;
+    }
+
+    /* Optional subtitle */
+    .subtitle {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      color: #666;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .nav a {
-      text-decoration: none;
-      color: #000;
-    }
-
-    .nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* TITLE */
-    .title {
-      font-size: 72px;
-      font-weight: 700;
-      margin-bottom: 100px;
-      max-width: 900px;
-    }
-
-    /* PROJECT SECTION */
-    .project {
-      margin-bottom: 160px;
-    }
-
-    /* 2x2 IMAGE GRID — HIGH CONTRAST */
-    .image-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .image-grid img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      background: #f2f2f2;
-    }
-
-    /* METADATA FOOTER */
-    .metadata {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      border-top: 1px solid #000;
-      padding-top: 20px;
-    }
-
-    .metadata span {
-      display: block;
-    }
-
-    /* PHILOSOPHY */
-    .philosophy {
-      margin-top: 200px;
-      max-width: 700px;
-    }
-
-    .philosophy h2 {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
-
-    .philosophy p {
-      font-size: 14px;
-    }
-
-    /* RESPONSIVE (KEEP IT RIGID) */
-    @media (max-width: 900px) {
-      .page {
-        padding: 40px;
-      }
-
-      .title {
-        font-size: 48px;
-      }
-
-      .image-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .metadata {
-        grid-template-columns: 1fr 1fr;
-      }
     }
   </style>
 </head>
-
 <body>
 
-  <div class="page">
-
-    <!-- NAV -->
-    <nav class="nav">
-      <a href="#">Photography</a>
-      <a href="#">Branding</a>
-      <a href="#">2025</a>
-      <a href="#">Info</a>
-    </nav>
-
-    <!-- TITLE -->
-    <h1 class="title">
-      Aden Anderson<br>
-      Order in the Chaos
-    </h1>
-
-    <!-- PROJECT -->
-    <section class="project">
-
-      <!-- IMAGES -->
-      <div class="image-grid">
-        <img src="image-1.jpg" alt="Flash portrait">
-        <img src="image-2.jpg" alt="Flash portrait">
-        <img src="image-3.jpg" alt="Flash portrait">
-        <img src="image-4.jpg" alt="Flash portrait">
+  <header>
+    <div>
+      <div class="name">
+        Aden <span class="middle-name">Seven</span> Anderson
       </div>
-
-      <!-- METADATA -->
-      <div class="metadata">
-        <span>Project: Editorial Study</span>
-        <span>Year: 2025</span>
-        <span>Medium: Photography</span>
-        <span>Made with: iPhone</span>
+      <div class="subtitle">
+        Portfolio
       </div>
-
-    </section>
-
-    <!-- PHILOSOPHY -->
-    <section class="philosophy">
-      <h2>Order in the Chaos.</h2>
-      <p>
-        Aden Anderson designs with the cold precision of a corporation
-        and the reckless spirit of a basement party. Raw moments,
-        pinned to a clean white wall. No filters. No fluff.
-        Just the work, the grid, and the truth.
-      </p>
-    </section>
-
-  </div>
+    </div>
+  </header>
 
 </body>
 </html>
