@@ -14,22 +14,50 @@
       src: url("Aldyn Heart Italic.ttf") format("truetype");
     }
 
+    /* ------------------------------
+       COLOR SYSTEM (EDITORIAL)
+    ------------------------------ */
+
+    :root {
+      --ink-black: #0a0a0a;
+      --paper-white: #fafafa;
+
+      /* Accent colors */
+      --notepad-pink: #ff9ecf;
+      --hot-pink: #ff2f92;
+      --acid-lime: #c9ff2f;
+      --cyan-ink: #2fd4ff;
+      --warm-yellow: #ffe86b;
+    }
+
     body {
       margin: 0;
-      background: #ffffff;
-      color: #000;
+      background: var(--paper-white);
+      color: var(--ink-black);
       font-family: Helvetica, Arial, sans-serif;
       overflow-x: hidden;
     }
 
     /* ------------------------------
-       COLOR VARIABLES
+       GLOBAL GRAIN / NOISE
     ------------------------------ */
 
-    :root {
-      --pink: #ff2f92;
-      --black: #000000;
-      --white: #ffffff;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.08;
+      background-image:
+        repeating-radial-gradient(
+          circle at 0 0,
+          rgba(0,0,0,0.25),
+          rgba(0,0,0,0.25) 1px,
+          transparent 1px,
+          transparent 2px
+        );
+      mix-blend-mode: multiply;
     }
 
     /* ------------------------------
@@ -45,32 +73,45 @@
       justify-content: space-between;
     }
 
+    .name-block {
+      position: relative;
+      max-width: 90%;
+    }
+
     .name {
       font-family: "AldynHeart", serif;
       font-size: clamp(4rem, 12vw, 10rem);
       line-height: 0.95;
       letter-spacing: -0.03em;
-      max-width: 90%;
     }
 
-    .name span {
-      display: inline-block;
-      transform: translateY(0.1em);
+    .since {
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-family: Helvetica, Arial, sans-serif;
     }
 
-    /* Slight “imperfect” cut-off feel */
-    .name::after {
+    /* Imperfect editorial underline */
+    .name-block::after {
       content: "";
       position: absolute;
-      right: -20%;
-      top: 25%;
-      width: 40%;
-      height: 3px;
-      background: var(--pink);
+      left: -10%;
+      bottom: -1.5rem;
+      width: 120%;
+      height: 6px;
+      background: linear-gradient(
+        90deg,
+        var(--notepad-pink),
+        var(--cyan-ink),
+        var(--acid-lime)
+      );
+      opacity: 0.8;
     }
 
     /* ------------------------------
-       METADATA (BOTTOM INFO)
+       METADATA
     ------------------------------ */
 
     .meta {
@@ -83,37 +124,49 @@
 
     .meta a {
       text-decoration: none;
-      color: black;
+      color: var(--ink-black);
     }
 
     .meta a:hover {
-      color: var(--pink);
+      color: var(--hot-pink);
     }
 
     /* ------------------------------
-       SECTION BREAK (PINK JOLT)
+       COLOR JOLT SECTIONS
     ------------------------------ */
 
     .break {
       height: 60vh;
-      background: var(--pink);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 2rem;
       font-family: "AldynHeart", serif;
+      font-size: 2.2rem;
+      text-align: center;
+      padding: 2rem;
     }
 
-    /* Subtle polka-dot texture */
+    .pink {
+      background: var(--notepad-pink);
+    }
+
+    .yellow {
+      background: var(--warm-yellow);
+    }
+
+    .cyan {
+      background: var(--cyan-ink);
+    }
+
+    /* Polka-dot print texture */
     .break {
       background-image:
         radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px);
-      background-size: 16px 16px;
+      background-size: 18px 18px;
     }
 
     /* ------------------------------
-       PROJECT LIST
+       PROJECTS
     ------------------------------ */
 
     .projects {
@@ -121,21 +174,26 @@
     }
 
     .project {
-      margin-bottom: 4rem;
-      max-width: 600px;
+      margin-bottom: 5rem;
+      max-width: 620px;
     }
 
     .project-title {
-      font-size: 2.5rem;
+      font-size: 2.6rem;
       font-family: "AldynHeart", serif;
       margin-bottom: 0.5rem;
       cursor: pointer;
+      display: inline-block;
     }
 
     .project-title:hover {
-      background: var(--pink);
+      background: linear-gradient(
+        90deg,
+        var(--hot-pink),
+        var(--cyan-ink)
+      );
       color: white;
-      padding-left: 0.5rem;
+      padding: 0.1em 0.4em;
     }
 
     .project-desc {
@@ -145,14 +203,14 @@
     }
 
     /* ------------------------------
-       STICKY FOOTER NAME
+       STICKY FOOTER
     ------------------------------ */
 
     .sticky-footer {
       position: sticky;
       bottom: 0;
-      background: white;
-      border-top: 1px solid black;
+      background: var(--paper-white);
+      border-top: 1px solid var(--ink-black);
       padding: 0.75rem 1.5rem;
       display: flex;
       justify-content: space-between;
@@ -165,22 +223,31 @@
 
 <body>
 
-  <!-- HERO / COVER -->
+  <!-- HERO -->
   <section class="hero">
-    <div class="name">
-      Aden <span>Seven</span><br />
-      Anderson
+    <div class="name-block">
+      <div class="name">
+        Aden Seven<br />
+        Anderson
+      </div>
+      <div class="since">
+        since 05 / 12 / 2010
+      </div>
     </div>
 
     <div class="meta">
-      <div>Portfolio / Issue 01</div>
+      <div>Portfolio · Issue 01</div>
       <div><a href="#">Contact</a></div>
     </div>
   </section>
 
-  <!-- PINK JOLT -->
-  <section class="break">
-    Full-time lover of type & tension
+  <!-- COLOR BREAKS -->
+  <section class="break pink">
+    Full-time lover of contrast & chaos
+  </section>
+
+  <section class="break cyan">
+    Web as zine, not as product
   </section>
 
   <!-- PROJECTS -->
@@ -188,21 +255,20 @@
     <div class="project">
       <div class="project-title">Untitled Experiment 001</div>
       <div class="project-desc">
-        A study in imbalance, contrast, and refusal to align.
-        Built like a confession, not a presentation.
+        Design that refuses symmetry.
+        Built like a margin note, not a headline.
       </div>
     </div>
 
     <div class="project">
       <div class="project-title">Printed Noise</div>
       <div class="project-desc">
-        Web as magazine. Design as misprint.
-        Nothing is centered on purpose.
+        Digital work pretending it was photocopied too many times.
       </div>
     </div>
   </section>
 
-  <!-- STICKY FOOTER -->
+  <!-- FOOTER -->
   <div class="sticky-footer">
     <div>Aden Seven Anderson</div>
     <div>2026</div>
