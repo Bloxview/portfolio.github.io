@@ -1,214 +1,925 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aden Seven Anderson</title>
-
+<title>TRAGIC FATE — Magnolia: An Archive of Shadows</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital@0;1&family=Old+Standard+TT&display=swap" rel="stylesheet">
 <style>
-@font-face {
-  font-family: "AldynHeart";
-  src: url("Aldyn Heart Italic.ttf") format("truetype");
-}
+  /* === CSS RESET & BASE === */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-:root{
-  --pink:#ff2f92;
-  --black:#000;
-  --white:#fff;
-}
+  :root {
+    --navy: #00001A;
+    --burgundy: #2E0000;
+    --deep-burgundy: #4A0404;
+    --gold: #D4AF37;
+    --bone: #F9F6EE;
+    --veil: rgba(244, 240, 236, 0.03);
+    --shadow: rgba(46, 0, 0, 0.7);
+  }
 
-*{box-sizing:border-box}
+  html {
+    scroll-behavior: smooth;
+  }
 
-body{
-  margin:0;
-  background:#fff;
-  color:#000;
-  font-family:Helvetica, Arial, sans-serif;
-  overflow-x:hidden;
-}
+  body {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--burgundy) 100%);
+    color: var(--bone);
+    font-family: 'Libre Baskerville', serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
 
-/* grain */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background-image:repeating-radial-gradient(
-    circle,
-    rgba(0,0,0,0.05),
-    rgba(0,0,0,0.05) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-  opacity:.3;
-  z-index:999;
-}
+  /* === THE VEILED ENTRANCE === */
+  #veiled-entrance {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    pointer-events: none;
+    transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    background: radial-gradient(circle at center, transparent 30%, var(--navy) 70%);
+  }
 
-/* HERO */
-.hero{
-  min-height:100vh;
-  padding:3rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-}
+  .text-veil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    font-family: 'Old Standard TT', serif;
+    font-size: 2.5vw;
+    color: var(--veil);
+    overflow: hidden;
+    line-height: 1;
+  }
 
-.name{
-  font-family:"AldynHeart", serif;
-  font-size:clamp(4rem,12vw,9rem);
-  line-height:.95;
-}
+  .veil-line {
+    position: absolute;
+    white-space: nowrap;
+    animation: veil-drift 60s linear infinite;
+  }
 
-.name .seven{
-  background:var(--pink);
-  color:#fff;
-  padding:.05em .25em;
-  transform:rotate(-4deg);
-  display:inline-block;
-}
+  @keyframes veil-drift {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100vw); }
+  }
 
-.tagline{
-  margin-top:1rem;
-  font-size:.7rem;
-  letter-spacing:.3em;
-  text-transform:uppercase;
-}
+  .countdown-container {
+    text-align: center;
+    z-index: 1001;
+    background: linear-gradient(transparent, rgba(0, 0, 26, 0.8));
+    padding: 3rem;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    backdrop-filter: blur(10px);
+  }
 
-/* STICKY FOOTER META */
-.footer-meta{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:.75rem 1.5rem;
-  display:flex;
-  justify-content:space-between;
-  font-size:.6rem;
-  letter-spacing:.25em;
-  text-transform:uppercase;
-  background:linear-gradient(to top, #fff 70%, transparent);
-  z-index:10;
-}
+  .countdown-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.5em;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+    position: relative;
+  }
 
-/* ISSUE SECTION */
-.issue{
-  padding:6rem 3rem;
-  max-width:900px;
-}
+  .countdown-title::before,
+  .countdown-title::after {
+    content: "✧";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--burgundy);
+    font-size: 1.5rem;
+  }
 
-.issue-number{
-  font-size:.65rem;
-  letter-spacing:.3em;
-  text-transform:uppercase;
-  margin-bottom:1rem;
-}
+  .countdown-title::before { left: -2rem; }
+  .countdown-title::after { right: -2rem; }
 
-.issue-title{
-  font-family:"AldynHeart", serif;
-  font-size:3rem;
-  line-height:1;
-  margin-bottom:1.5rem;
-}
+  #timer {
+    font-family: 'Old Standard TT', serif;
+    font-size: 3.5rem;
+    letter-spacing: 0.2em;
+    margin: 2rem 0;
+    color: var(--bone);
+    text-shadow: 
+      0 0 10px var(--burgundy),
+      2px 2px 0 var(--deep-burgundy);
+  }
 
-.issue-text{
-  font-family:"Courier New", monospace;
-  font-size:.9rem;
-  line-height:1.7;
-  max-width:520px;
-}
+  .timer-label {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-top: 1rem;
+    border-top: 1px dashed rgba(212, 175, 55, 0.3);
+    padding-top: 1rem;
+  }
 
-/* IMAGE PASTE */
-.issue img{
-  width:280px;
-  margin:2.5rem 0;
-  filter:grayscale(100%) contrast(1.1);
-  transform:rotate(-2deg);
-}
+  .scroll-hint {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    color: var(--gold);
+    opacity: 0.7;
+    animation: pulse 2s infinite;
+  }
 
-/* PINK INTERRUPTION */
-.interruption{
-  background:var(--pink);
-  color:#fff;
-  padding:5rem 3rem;
-  font-family:"AldynHeart", serif;
-  font-size:3.5rem;
-  line-height:1;
-}
+  @keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 0.3; }
+  }
 
-/* CURSOR ORB */
-.cursor-orb{
-  position:fixed;
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:var(--pink);
-  opacity:.18;
-  filter:blur(40px);
-  pointer-events:none;
-  transform:translate(-50%,-50%);
-}
+  /* === LACE VEIL OVERLAY === */
+  #lace-veil {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background-image: 
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 1px,
+        rgba(212, 175, 55, 0.02) 1px,
+        rgba(212, 175, 55, 0.02) 2px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(46, 0, 0, 0.03) 1px,
+        rgba(46, 0, 0, 0.03) 2px
+      );
+    mix-blend-mode: overlay;
+  }
 
-@media(max-width:768px){
-  .cursor-orb{display:none}
-}
+  /* === MAIN CONTENT === */
+  #content {
+    position: relative;
+    z-index: 100;
+    padding-top: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin: 5rem 0 3rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    position: relative;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    content: "❧";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--burgundy);
+    font-size: 2rem;
+  }
+
+  .section-title::before { left: 10%; }
+  .section-title::after { right: 10%; }
+
+  /* === TRACKLIST: THE EIGHT STITCHES === */
+  #tracklist {
+    padding: 0 2rem;
+  }
+
+  .track {
+    margin: 4rem 0;
+    position: relative;
+  }
+
+  /* TRACK 01: REDACTED (Cut Fabric) */
+  #track-01 {
+    background-color: var(--deep-burgundy);
+    height: 200px;
+    position: relative;
+    border: 2px dashed var(--burgundy);
+  }
+
+  #track-01::before {
+    content: "STITCH 01";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: rgba(249, 246, 238, 0.3);
+    letter-spacing: 0.5em;
+  }
+
+  /* TRACK 02: FORTNIGHT - American King Crown */
+  #track-02 {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .crown-container {
+    position: relative;
+    margin: 2rem 0;
+  }
+
+  .crown-top {
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .king-frame {
+    display: inline-block;
+    padding: 2rem 4rem;
+    border: 3px double var(--gold);
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 26, 0.9), rgba(46, 0, 0, 0.9));
+  }
+
+  .frame-border {
+    position: absolute;
+    font-family: 'Old Standard TT', serif;
+    color: var(--burgundy);
+    font-size: 1.5rem;
+  }
+
+  .frame-top { top: -1.5rem; left: 0; right: 0; text-align: center; }
+  .frame-bottom { bottom: -1.5rem; left: 0; right: 0; text-align: center; }
+  .frame-left { left: -1.5rem; top: 50%; transform: translateY(-50%); }
+  .frame-right { right: -1.5rem; top: 50%; transform: translateY(-50%); }
+
+  .king-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    letter-spacing: 0.3em;
+    color: var(--bone);
+    text-shadow: 3px 3px 0 var(--deep-burgundy);
+    margin: 1rem 0;
+  }
+
+  .crown-bottom {
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    margin-top: 1rem;
+  }
+
+  .fortnight-lyrics {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 2;
+    margin-top: 2rem;
+    text-align: justify;
+    column-count: 2;
+    column-gap: 3rem;
+    color: rgba(249, 246, 238, 0.8);
+  }
+
+  /* TRACK 03: COVERT NARCISSIST - Corset Shape */
+  #track-03 {
+    padding: 4rem 0;
+  }
+
+  .corset-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .corset-line {
+    font-family: 'Libre Baskerville', serif;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .corset-line:hover {
+    color: var(--burgundy);
+    text-shadow: 
+      0 2px 4px rgba(46, 0, 0, 0.5),
+      0 0 20px rgba(46, 0, 0, 0.3);
+    transform: scale(1.02);
+  }
+
+  /* Corset shape created through varying text widths */
+  .corset-top {
+    font-size: 1.8rem;
+    letter-spacing: 0.2em;
+    margin: 0.5rem 10%;
+    color: var(--gold);
+  }
+
+  .corset-upper {
+    font-size: 1.5rem;
+    letter-spacing: 0.15em;
+    margin: 0.5rem 20%;
+  }
+
+  .corset-middle {
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    margin: 0.5rem 35%;
+    font-style: italic;
+    color: var(--burgundy);
+  }
+
+  .corset-lower {
+    font-size: 1.3rem;
+    letter-spacing: 0.15em;
+    margin: 0.5rem 25%;
+  }
+
+  .corset-bottom {
+    font-size: 1.6rem;
+    letter-spacing: 0.2em;
+    margin: 0.5rem 15%;
+    color: var(--gold);
+  }
+
+  .corset-laces {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 100%;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--gold) 10%,
+      var(--gold) 90%,
+      transparent
+    );
+    opacity: 0.3;
+  }
+
+  /* TRACK 04: REDACTED (Stitched Block) */
+  #track-04 {
+    background: 
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(46, 0, 0, 0.1) 10px,
+        rgba(46, 0, 0, 0.1) 20px
+      );
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+  }
+
+  .stitch-border {
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.5em;
+    color: rgba(212, 175, 55, 0.3);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .stitch-content {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    color: rgba(249, 246, 238, 0.2);
+    margin: 2rem 0;
+    text-transform: uppercase;
+  }
+
+  /* TRACK 05: TRAGIC FATE - Angered Bear */
+  #track-05 {
+    min-height: 600px;
+    position: relative;
+    border: 2px solid rgba(46, 0, 0, 0.5);
+  }
+
+  .void-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border: 2px dashed var(--burgundy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .void-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--burgundy);
+    letter-spacing: 0.2em;
+    text-align: center;
+  }
+
+  .corner-text {
+    position: absolute;
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 300px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .corner-text:hover {
+    color: var(--burgundy);
+    text-shadow: 0 0 10px rgba(46, 0, 0, 0.5);
+  }
+
+  .top-left { top: 5%; left: 5%; text-align: left; }
+  .top-right { top: 5%; right: 5%; text-align: right; }
+  .bottom-left { bottom: 5%; left: 5%; text-align: left; }
+  .bottom-right { bottom: 5%; right: 5%; text-align: right; }
+
+  /* TRACK 06: 7WISHES - Shimmering */
+  #track-06 {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .wishes-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    animation: shimmer 3s infinite alternate;
+    text-shadow: 
+      0 0 30px rgba(212, 175, 55, 0.3),
+      2px 2px 0 var(--deep-burgundy);
+  }
+
+  @keyframes shimmer {
+    0% { 
+      opacity: 0.7;
+      text-shadow: 
+        0 0 20px rgba(212, 175, 55, 0.3),
+        2px 2px 0 var(--deep-burgundy);
+    }
+    100% { 
+      opacity: 1;
+      text-shadow: 
+        0 0 40px rgba(212, 175, 55, 0.7),
+        0 0 60px rgba(212, 175, 55, 0.5),
+        2px 2px 0 var(--deep-burgundy);
+    }
+  }
+
+  /* TRACK 07: THE GARDEN - Floral Vines */
+  #track-07 {
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+  }
+
+  .vines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.8rem;
+    color: rgba(46, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  .vine-left, .vine-right {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .vine-left { left: 10%; }
+  .vine-right { right: 10%; }
+
+  .garden-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    letter-spacing: 0.3em;
+    color: var(--bone);
+    position: relative;
+    z-index: 2;
+    text-shadow: 2px 2px 0 var(--deep-burgundy);
+  }
+
+  .garden-subtitle {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: rgba(212, 175, 55, 0.7);
+    margin-top: 1rem;
+    letter-spacing: 0.2em;
+  }
+
+  /* TRACK 08: REDACTED (Fading) */
+  #track-08 {
+    height: 300px;
+    background: linear-gradient(to bottom, rgba(46, 0, 0, 0.5), transparent);
+    margin-top: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faded-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    letter-spacing: 0.5em;
+    color: rgba(249, 246, 238, 0.1);
+    text-transform: uppercase;
+  }
+
+  /* === FOOTER: THE BIRTHDAY MARKER === */
+  footer {
+    margin-top: 8rem;
+    padding: 4rem 2rem;
+    border-top: 2px solid rgba(212, 175, 55, 0.2);
+    text-align: center;
+    position: relative;
+  }
+
+  .footer-divider {
+    font-family: 'Old Standard TT', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.5em;
+    color: rgba(212, 175, 55, 0.3);
+    margin-bottom: 2rem;
+  }
+
+  .footer-dedication {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.2rem;
+    line-height: 2;
+    color: rgba(249, 246, 238, 0.7);
+    margin: 2rem 0;
+  }
+
+  .footer-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    font-style: italic;
+    margin: 3rem 0;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .copyright {
+    font-family: 'Old Standard TT', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    color: rgba(249, 246, 238, 0.4);
+    margin-top: 3rem;
+  }
+
+  /* === BLOOD & CHERRY EFFECT (for lyrics) === */
+  .blood-text {
+    position: relative;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+
+  .blood-text:hover {
+    color: var(--burgundy);
+  }
+
+  .blood-text:hover::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--burgundy), transparent);
+    animation: drip 0.5s ease-out;
+  }
+
+  @keyframes drip {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { transform: translateY(5px); opacity: 1; }
+    100% { transform: translateY(10px); opacity: 0; }
+  }
+
+  /* === RESPONSIVE DESIGN === */
+  @media (max-width: 768px) {
+    .countdown-title { font-size: 1.8rem; }
+    #timer { font-size: 2.5rem; }
+    .king-title { font-size: 2rem; }
+    .wishes-title, .garden-title { font-size: 2.5rem; }
+    .fortnight-lyrics { column-count: 1; }
+    .corset-top { font-size: 1.3rem; margin: 0.5rem 5%; }
+    .corset-upper { font-size: 1.1rem; margin: 0.5rem 15%; }
+    .corset-middle { font-size: 0.8rem; margin: 0.5rem 25%; }
+    .void-center { width: 200px; height: 200px; }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="cursor-orb" id="orb"></div>
+<!-- LACE VEIL OVERLAY -->
+<div id="lace-veil"></div>
 
-<section class="hero">
-  <div>
-    <div class="name">
-      Aden <span class="seven">Seven</span><br>
-      Anderson
+<!-- VEILED ENTRANCE -->
+<section id="veiled-entrance">
+  <!-- Text veil -->
+  <div class="text-veil" id="text-veil"></div>
+  
+  <!-- Countdown -->
+  <div class="countdown-container">
+    <div class="countdown-title">TRAGIC FATE</div>
+    <div class="timer-label">THE CREATION OF MAGNOLIA</div>
+    <div id="timer">00:00:00:00</div>
+    <div class="timer-label">05 / 13 / 2026</div>
+  </div>
+  
+  <div class="scroll-hint">SCROLL TO REVEAL THE TAPESTRY</div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main id="content">
+  <h1 class="section-title">THE EIGHT STITCHES</h1>
+  
+  <section id="tracklist">
+    <!-- TRACK 01 -->
+    <div class="track" id="track-01"></div>
+    
+    <!-- TRACK 02: FORTNIGHT -->
+    <div class="track" id="track-02">
+      <div class="crown-container">
+        <div class="crown-top">♰ ♰ ♰ ♰ ♰ ♰ ♰ ♰</div>
+        <div class="king-frame">
+          <div class="frame-border frame-top">♰</div>
+          <div class="frame-border frame-bottom">♰</div>
+          <div class="frame-border frame-left">♰</div>
+          <div class="frame-border frame-right">♰</div>
+          <div class="king-title">KING OF AMERICA</div>
+        </div>
+        <div class="crown-bottom">♰ ♰ ♰ ♰ ♰ ♰ ♰ ♰</div>
+      </div>
+      
+      <div class="fortnight-lyrics">
+        <span class="blood-text">I'll be your American king</span><br>
+        Lay me with veils of white<br>
+        If it means you'll be my black knight<br>
+        Just for a fortnight<br><br>
+        
+        Powdered wigs and roses wilted<br>
+        All for your sight<br>
+        Walk me through the halls of the bishop<br>
+        Just for a night<br><br>
+        
+        <span class="blood-text">I'll see the end of night</span><br>
+        Before I even gain your light<br>
+        I'm the metaphor to my own story<br>
+        Running just to be in your glory
+      </div>
     </div>
-    <div class="tagline">
-      modern editorial / visual instinct / full-time lover
+    
+    <!-- TRACK 03: COVERT NARCISSIST -->
+    <div class="track" id="track-03">
+      <div class="corset-container">
+        <div class="corset-line corset-top">WHY CAN'T I JUST BE PRETTY?</div>
+        <div class="corset-line corset-upper">IT'S SOMETHING I DON'T SEE</div>
+        <div class="corset-line corset-upper">PRETTIER, HAPPIER, JEALOUSY</div>
+        <div class="corset-line corset-middle">All my challenges are mental</div>
+        <div class="corset-line corset-middle">I dress them up as control</div>
+        <div class="corset-line corset-lower">SHE TOPS ME ON EVERY METRIC</div>
+        <div class="corset-line corset-lower">I SWEAR I'M OVER IT NOW</div>
+        <div class="corset-line corset-bottom">HATED BY THE FAN OF MY OWN INFAMY</div>
+        <div class="corset-laces"></div>
+      </div>
     </div>
+    
+    <!-- TRACK 04 -->
+    <div class="track" id="track-04">
+      <div class="stitch-border">---✧---✧---✧---✧---✧---</div>
+      <div class="stitch-content">STITCH FOUR</div>
+      <div class="stitch-border">---✧---✧---✧---✧---✧---</div>
+    </div>
+    
+    <!-- TRACK 05: TRAGIC FATE -->
+    <div class="track" id="track-05">
+      <div class="void-center">
+        <div class="void-text">THE BEAR<br>IN THE<br>VOID</div>
+      </div>
+      
+      <div class="corner-text top-left">
+        <span class="blood-text">I've been standing on your doorstep</span><br>
+        Like it's somewhere I belong<br>
+        I know better than to knock now<br>
+        But I waited all along
+      </div>
+      
+      <div class="corner-text top-right">
+        I get quiet when I want you<br>
+        Get loud when I pretend<br>
+        <span class="blood-text">I snarl like an angered bear</span><br>
+        Cornered by what I won't say
+      </div>
+      
+      <div class="corner-text bottom-left">
+        The bear gets tired of the corner<br>
+        The glass gets tired of the cracks<br>
+        I don't scream, I don't confess<br>
+        I just walk past
+      </div>
+      
+      <div class="corner-text bottom-right">
+        <span class="blood-text">I don't need to call it tragic</span><br>
+        I don't need to call it fate<br>
+        It's just liking someone deeply<br>
+        And I keep taking the bait
+      </div>
+    </div>
+    
+    <!-- TRACK 06: 7WISHES -->
+    <div class="track" id="track-06">
+      <div class="wishes-title">7WISHES</div>
+    </div>
+    
+    <!-- TRACK 07: THE GARDEN -->
+    <div class="track" id="track-07">
+      <div class="vines">
+        <div class="vine-left">❧ ☙ ❀ ✧ ⊹ ❧ ☙ ❀ ✧ ⊹ ❧ ☙ ❀ ✧ ⊹ ❧ ☙ ❀ ✧ ⊹</div>
+        <div class="vine-right">❧ ☙ ❀ ✧ ⊹ ❧ ☙ ❀ ✧ ⊹ ❧ ☙ ❀ ✧ ⊹ ❧ ☙ ❀ ✧ ⊹</div>
+      </div>
+      <div class="garden-title">THE GARDEN</div>
+      <div class="garden-subtitle">WHERE THORNS OUTBLOOM THE ROSES</div>
+    </div>
+    
+    <!-- TRACK 08 -->
+    <div class="track" id="track-08">
+      <div class="faded-text">FINAL STITCH</div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-divider">-----------------------------------------------------------------------</div>
+  
+  <div class="footer-dedication">
+    DESIGNED FOR THE ANNIVERSARY OF MAGNOLIA<br>
+    MAY 13, 2026
   </div>
-</section>
-
-<div class="footer-meta">
-  <div>© 2010–2026</div>
-  <div>adenanderson@editorial.space</div>
-</div>
-
-<section class="issue">
-  <div class="issue-number">Issue 001</div>
-  <div class="issue-title">Printed Noise</div>
-  <div class="issue-text">
-    I don’t design for clarity.  
-    I design for friction.  
-    The pause before understanding is the point.
+  
+  <div class="footer-quote">"I'LL BE THE EVE TO YOUR FALSE PROPHET"</div>
+  
+  <div class="footer-dedication">
+    AN ARCHIVE OF SHADOWS<br>
+    A TAPESTRY OF EIGHT STITCHES<br>
+    A VEILED CONFESSION
   </div>
-  <img src="main.jpg" alt="">
-</section>
-
-<section class="interruption">
-  design is a feeling  
-  before it is a product
-</section>
-
-<section class="issue">
-  <div class="issue-number">Issue 002</div>
-  <div class="issue-title">Untitled Experiment</div>
-  <div class="issue-text">
-    Photography as instinct.  
-    Layouts that feel like mistakes.  
-    A refusal to clean things up too much.
-  </div>
-  <img src="main2.jpg" alt="">
-</section>
+  
+  <div class="copyright">[ALL RIGHTS RESERVED TO THE FATE]</div>
+</footer>
 
 <script>
-const orb = document.getElementById("orb");
-window.addEventListener("mousemove", e=>{
-  orb.style.left = e.clientX + "px";
-  orb.style.top = e.clientY + "px";
-});
-</script>
+  // Initialize text veil
+  const textVeil = document.getElementById('text-veil');
+  const veilText = 'TRAGIC FATE ';
+  let veilHTML = '';
+  
+  for (let i = 0; i < 50; i++) {
+    const top = Math.random() * 100;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 60;
+    veilHTML += `<div class="veil-line" style="top: ${top}%; left: ${left}%; animation-delay: -${delay}s;">${veilText.repeat(20)}</div>`;
+  }
+  
+  textVeil.innerHTML = veilHTML;
 
+  // Countdown Timer
+  const timerElement = document.getElementById('timer');
+  const releaseDate = new Date('2026-05-13T00:00:00');
+  
+  function updateCountdown() {
+    const now = new Date();
+    const timeRemaining = releaseDate - now;
+    
+    if (timeRemaining <= 0) {
+      timerElement.textContent = "00:00:00:00";
+      return;
+    }
+    
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+    
+    timerElement.textContent = 
+      `${days.toString().padStart(2, '0')}:` +
+      `${hours.toString().padStart(2, '0')}:` +
+      `${minutes.toString().padStart(2, '0')}:` +
+      `${seconds.toString().padStart(2, '0')}`;
+    
+    // Pulsing effect
+    const intensity = Math.sin(Date.now() / 1000) * 0.5 + 0.5;
+    timerElement.style.textShadow = 
+      `0 0 ${10 + intensity * 20}px var(--burgundy),
+       2px 2px 0 var(--deep-burgundy)`;
+  }
+  
+  // Scroll interaction
+  const veiledEntrance = document.getElementById('veiled-entrance');
+  let lastScroll = 0;
+  
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const scrollPercent = Math.min(currentScroll / windowHeight, 1);
+    
+    // Move veil up as user scrolls
+    veiledEntrance.style.transform = `translateY(-${scrollPercent * 100}%)`;
+    veiledEntrance.style.opacity = 1 - scrollPercent;
+    
+    // Update lace veil opacity
+    const laceVeil = document.getElementById('lace-veil');
+    laceVeil.style.opacity = 0.05 + (scrollPercent * 0.1);
+    
+    lastScroll = currentScroll;
+  });
+  
+  // Blood & Cherry effect for all blood-text elements
+  const bloodTexts = document.querySelectorAll('.blood-text');
+  bloodTexts.forEach(text => {
+    text.addEventListener('mouseenter', function() {
+      const letters = this.textContent.split('');
+      this.innerHTML = letters.map(letter => 
+        `<span style="transition: color ${Math.random() * 0.5 + 0.2}s; color: var(--burgundy);">${letter}</span>`
+      ).join('');
+    });
+    
+    text.addEventListener('mouseleave', function() {
+      setTimeout(() => {
+        this.innerHTML = this.textContent;
+      }, 500);
+    });
+  });
+  
+  // Corset breathing animation
+  const corsetLines = document.querySelectorAll('.corset-line');
+  let corsetFrame = 0;
+  
+  function animateCorset() {
+    corsetFrame++;
+    corsetLines.forEach((line, index) => {
+      const phase = (corsetFrame + index * 10) % 60;
+      const scale = 1 + Math.sin(phase * Math.PI / 30) * 0.02;
+      line.style.transform = `scaleX(${scale})`;
+    });
+    requestAnimationFrame(animateCorset);
+  }
+  
+  animateCorset();
+  
+  // Update timer
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  
+  // Initial lace veil randomization
+  const laceVeil = document.getElementById('lace-veil');
+  laceVeil.style.backgroundPosition = `${Math.random() * 100}px ${Math.random() * 100}px`;
+</script>
 </body>
 </html>
