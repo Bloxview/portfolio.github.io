@@ -1,510 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAGNOLIA — TRAGIC FATE</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --navy: #00001A;
-    --bone: #F9F6EE;
-    --burgundy: #4A0404;
-    --hover: #1A0008;
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    height: 100%;
-  }
-  
-  body {
-    background-color: var(--navy);
-    color: var(--bone);
-    font-family: 'Cormorant Garamond', serif;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-  
-  /* === LANDING VIEW === */
-  .landing {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-    position: relative;
-  }
-  
-  .landing::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: 60px;
-    background: linear-gradient(to bottom, var(--bone), transparent);
-    animation: pulse 2s infinite;
-  }
-  
-  @keyframes pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
-  }
-  
-  .magnolia {
-    font-size: 4.5rem;
-    font-weight: 300;
-    letter-spacing: 0.5em;
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    position: relative;
-  }
-  
-  .magnolia::after {
-    content: "";
-    position: absolute;
-    bottom: -1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 1px;
-    background-color: var(--bone);
-    opacity: 0.5;
-  }
-  
-  .album-title {
-    font-size: 1.8rem;
-    font-weight: 400;
-    letter-spacing: 0.3em;
-    margin-bottom: 3rem;
-    opacity: 0.9;
-  }
-  
-  .release-date {
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    opacity: 0.7;
-    margin-top: 1rem;
-  }
-  
-  /* === TRACKLIST === */
-  .tracklist {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
-  }
-  
-  .track {
-    padding: 3rem 0;
-    border-bottom: 1px solid rgba(249, 246, 238, 0.1);
-    transition: all 0.4s ease;
-    position: relative;
-  }
-  
-  .track:last-child {
-    border-bottom: none;
-  }
-  
-  .track:hover {
-    background-color: var(--hover);
-    padding-left: 2rem;
-    padding-right: 2rem;
-    margin-left: -2rem;
-    margin-right: -2rem;
-  }
-  
-  .track-number {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-    color: var(--burgundy);
-    margin-bottom: 0.5rem;
-    opacity: 0.8;
-  }
-  
-  .track-title {
-    font-size: 2.2rem;
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    margin-bottom: 1rem;
-    transition: color 0.3s ease;
-  }
-  
-  .track:hover .track-title {
-    color: var(--bone);
-  }
-  
-  .core-line {
-    font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    line-height: 1.8;
-    font-style: italic;
-    opacity: 0.8;
-    max-width: 500px;
-    margin-top: 1rem;
-    border-left: 1px solid rgba(249, 246, 238, 0.2);
-    padding-left: 1rem;
-  }
-  
-  /* REDACTED TRACKS */
-  .redacted .track-title {
-    opacity: 0.3;
-  }
-  
-  .redacted .core-line {
-    display: none;
-  }
-  
-  .redacted::after {
-    content: "━";
-    position: absolute;
-    bottom: 3rem;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    color: var(--burgundy);
-    opacity: 0.3;
-    letter-spacing: 0.5em;
-  }
-  
-  /* === MARKETING SNIPPETS === */
-  .snippets {
-    max-width: 600px;
-    margin: 6rem auto;
-    padding: 0 2rem;
-  }
-  
-  .snippet {
-    margin-bottom: 3rem;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 0.8s ease forwards;
-  }
-  
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Student Portal</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f4f5f7;
+      color: #333;
     }
-  }
-  
-  .snippet:nth-child(1) { animation-delay: 0.1s; }
-  .snippet:nth-child(2) { animation-delay: 0.3s; }
-  .snippet:nth-child(3) { animation-delay: 0.5s; }
-  .snippet:nth-child(4) { animation-delay: 0.7s; }
-  .snippet:nth-child(5) { animation-delay: 0.9s; }
-  
-  .snippet-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-    color: var(--bone);
-  }
-  
-  .snippet-desc {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
-    line-height: 1.7;
-    opacity: 0.7;
-  }
-  
-  /* === COUNTDOWN === */
-  .countdown-section {
-    max-width: 600px;
-    margin: 8rem auto 4rem;
-    padding: 0 2rem;
-    text-align: center;
-  }
-  
-  .countdown-label {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-bottom: 2rem;
-  }
-  
-  #countdown {
-    font-size: 1.8rem;
-    letter-spacing: 0.1em;
-    margin: 2rem 0;
-    font-variant-numeric: tabular-nums;
-  }
-  
-  .release-note {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    opacity: 0.5;
-    margin-top: 2rem;
-    border-top: 1px solid rgba(249, 246, 238, 0.1);
-    padding-top: 2rem;
-  }
-  
-  /* === FOOTER === */
-  footer {
-    max-width: 600px;
-    margin: 4rem auto;
-    padding: 3rem 2rem;
-    text-align: center;
-    border-top: 1px solid rgba(249, 246, 238, 0.05);
-  }
-  
-  .copyright {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.8rem;
-    opacity: 0.4;
-    letter-spacing: 0.1em;
-  }
-  
-  /* === RESPONSIVE === */
-  @media (max-width: 768px) {
-    .magnolia {
-      font-size: 2.8rem;
-      letter-spacing: 0.3em;
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    
-    .album-title {
-      font-size: 1.4rem;
-      letter-spacing: 0.2em;
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
     }
-    
-    .track-title {
-      font-size: 1.8rem;
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: bold;
     }
-    
-    .track:hover {
-      padding-left: 1rem;
-      padding-right: 1rem;
-      margin-left: -1rem;
-      margin-right: -1rem;
+
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
     }
-  }
-  
-  @media (max-width: 480px) {
-    .magnolia {
-      font-size: 2rem;
-      letter-spacing: 0.2em;
+
+    .card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
     }
-    
-    .tracklist,
-    .snippets,
-    .countdown-section {
-      padding-left: 1rem;
-      padding-right: 1rem;
+
+    h2 {
+      margin-top: 0;
     }
-  }
-</style>
+
+    ul {
+      padding-left: 1.2rem;
+    }
+
+    button {
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3498db;
+    }
+
+    .announcement {
+      background-color: #fde3e3;
+      padding: 0.8rem;
+      border-radius: 5px;
+      margin-bottom: 0.5rem;
+    }
+  </style>
 </head>
 <body>
 
-<!-- LANDING VIEW -->
-<section class="landing">
-  <div class="magnolia">MAGNOLIA</div>
-  <div class="album-title">TRAGIC FATE</div>
-  <div class="release-date">05 / 13 / 2026</div>
-</section>
+  <header>
+    <h1>Student Portal</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Schedule</a>
+      <a href="#">Bus Info</a>
+      <a href="#">Account</a>
+      <a href="#">Messages</a>
+    </nav>
+  </header>
 
-<!-- TRACKLIST -->
-<section class="tracklist">
-  <!-- TRACK 01 -->
-  <div class="track redacted">
-    <div class="track-number">01</div>
-    <div class="track-title">[REDACTED]</div>
-  </div>
-  
-  <!-- TRACK 02 -->
-  <div class="track">
-    <div class="track-number">02</div>
-    <div class="track-title">FORTNIGHT</div>
-    <div class="core-line">"I'll be the king you never asked for, and still, I feel so right."</div>
-  </div>
-  
-  <!-- TRACK 03 -->
-  <div class="track">
-    <div class="track-number">03</div>
-    <div class="track-title">COVERT NARCISSIST</div>
-    <div class="core-line">"I say 'I've healed, I'm better now' while I'm losing the role."</div>
-  </div>
-  
-  <!-- TRACK 04 -->
-  <div class="track redacted">
-    <div class="track-number">04</div>
-    <div class="track-title">[REDACTED]</div>
-  </div>
-  
-  <!-- TRACK 05 -->
-  <div class="track">
-    <div class="track-number">05</div>
-    <div class="track-title">TRAGIC FATE</div>
-    <div class="core-line">"I snarl like an angered bear, cornered by what I won't say."</div>
-  </div>
-  
-  <!-- TRACK 06 -->
-  <div class="track">
-    <div class="track-number">06</div>
-    <div class="track-title">7WISHES</div>
-    <div class="core-line">A hate anthem for the things that refuse to die.</div>
-  </div>
-  
-  <!-- TRACK 07 -->
-  <div class="track">
-    <div class="track-number">07</div>
-    <div class="track-title">THE GARDEN</div>
-    <div class="core-line">The anatomy of unrequited love; watching from the thorns.</div>
-  </div>
-  
-  <!-- TRACK 08 -->
-  <div class="track redacted">
-    <div class="track-number">08</div>
-    <div class="track-title">[REDACTED]</div>
-  </div>
-</section>
+  <div class="container">
 
-<!-- MARKETING SNIPPETS -->
-<section class="snippets">
-  <div class="snippet">
-    <div class="snippet-title">FORTNIGHT</div>
-    <div class="snippet-desc">The delusion of a king. Wanting someone so badly you'd wear a wilted rose just to be noticed for a single night.</div>
-  </div>
-  
-  <div class="snippet">
-    <div class="snippet-title">COVERT NARCISSIST</div>
-    <div class="snippet-desc">The metrics of jealousy. Editing your life to look healed while burning with envy inside.</div>
-  </div>
-  
-  <div class="snippet">
-    <div class="snippet-title">TRAGIC FATE</div>
-    <div class="snippet-desc">The pattern of the doorstep. Realizing you aren't a guest—you're just someone who keeps taking the bait.</div>
-  </div>
-  
-  <div class="snippet">
-    <div class="snippet-title">7WISHES</div>
-    <div class="snippet-desc">The hate anthem. The sound of finally snapping—bitter, loud, and unforgiving.</div>
-  </div>
-  
-  <div class="snippet">
-    <div class="snippet-title">THE GARDEN</div>
-    <div class="snippet-desc">The clinical look at a heart that stays where it isn't wanted, growing like a weed in someone else's garden.</div>
-  </div>
-</section>
+    <!-- Left Column -->
+    <div>
+      <div class="card">
+        <h2>Today's Schedule</h2>
+        <ul>
+          <li>8:00 AM - Math</li>
+          <li>9:00 AM - English</li>
+          <li>10:00 AM - Chemistry</li>
+          <li>11:00 AM - Lunch</li>
+          <li>12:00 PM - History</li>
+        </ul>
+      </div>
 
-<!-- COUNTDOWN -->
-<section class="countdown-section">
-  <div class="countdown-label">COUNTDOWN TO RELEASE</div>
-  <div id="countdown">00 : 00 : 00 : 00</div>
-  <div class="release-note">Full album available May 13, 2026</div>
-</section>
+      <div class="card">
+        <h2>Account Balance</h2>
+        <p id="balance">$125.50</p>
+        <button onclick="payBalance()">Pay Now</button>
+      </div>
+    </div>
 
-<footer>
-  <div class="copyright">MAGNOLIA © 2026. ALL RIGHTS RESERVED.</div>
-</footer>
+    <!-- Right Column -->
+    <div>
+      <div class="card">
+        <h2>Bus Schedule</h2>
+        <ul>
+          <li>Morning Pickup: 7:15 AM</li>
+          <li>Afternoon Dropoff: 3:30 PM</li>
+        </ul>
+      </div>
 
-<script>
-  // Smooth scroll behavior for track hover effect
-  document.querySelectorAll('.track').forEach(track => {
-    track.addEventListener('mouseenter', function() {
-      this.style.zIndex = '10';
-    });
-    
-    track.addEventListener('mouseleave', function() {
-      this.style.zIndex = '1';
-    });
-  });
-  
-  // Countdown Timer
-  const countdownElement = document.getElementById('countdown');
-  const releaseDate = new Date('2026-05-13T00:00:00');
-  
-  function updateCountdown() {
-    const now = new Date();
-    const diff = releaseDate - now;
-    
-    if (diff <= 0) {
-      countdownElement.textContent = "00 : 00 : 00 : 00";
-      countdownElement.style.opacity = "0.5";
-      return;
+      <div class="card">
+        <h2>Announcements</h2>
+        <div class="announcement">Library closes early today at 4 PM.</div>
+        <div class="announcement">Science fair submissions due Friday!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function payBalance() {
+      const balanceEl = document.getElementById('balance');
+      balanceEl.textContent = "$0.00";
+      alert("Payment Successful!");
     }
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const seconds = Math.floor((diff / 1000) % 60);
-    
-    countdownElement.textContent = 
-      `${days.toString().padStart(2, '0')} : ` +
-      `${hours.toString().padStart(2, '0')} : ` +
-      `${minutes.toString().padStart(2, '0')} : ` +
-      `${seconds.toString().padStart(2, '0')}`;
-    
-    // Subtle pulsing effect on seconds
-    if (seconds % 2 === 0) {
-      countdownElement.style.opacity = "1";
-    } else {
-      countdownElement.style.opacity = "0.95";
-    }
-  }
-  
-  // Intersection Observer for snippet animations
-  const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  };
-  
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.animationPlayState = 'running';
-      }
-    });
-  }, observerOptions);
-  
-  document.querySelectorAll('.snippet').forEach(snippet => {
-    observer.observe(snippet);
-  });
-  
-  // Initialize
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-  
-  // Scroll hint animation
-  let lastScroll = 0;
-  const landing = document.querySelector('.landing');
-  
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    
-    if (currentScroll > lastScroll && currentScroll > 100) {
-      landing.style.opacity = Math.max(0, 1 - (currentScroll / 300));
-    }
-    
-    lastScroll = currentScroll;
-  });
-  
-  // Track number color cycle
-  const trackNumbers = document.querySelectorAll('.track-number');
-  let hue = 0;
-  
-  setInterval(() => {
-    hue = (hue + 0.5) % 360;
-    trackNumbers.forEach((num, index) => {
-      const delay = index * 100;
-      setTimeout(() => {
-        num.style.color = `hsl(${hue}, 40%, 50%)`;
-      }, delay);
-    });
-  }, 3000);
-</script>
+  </script>
+
 </body>
 </html>
