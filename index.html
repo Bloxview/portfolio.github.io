@@ -3,392 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Clock</title>
+    <title>Canvas</title>
     <style>
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background: #0a0a0a;
-            color: #f5f5f5;
+            background-color: #F5F5F7;
+            color: #1D1D1F;
             height: 100vh;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            transition: background-color 0.4s, color 0.4s;
+            transition: background-color 0.5s ease;
         }
 
-        .container {
-            height: 100vh;
+        /* Boot Sequence Styles */
+        #bootSequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #F5F5F7;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            z-index: 1000;
+            transition: opacity 0.8s ease;
         }
 
-        .time {
-            font-size: 20vw;
-            font-weight: 400;
-            line-height: 1;
-            letter-spacing: -2px;
-            text-align: center;
-            transition: opacity 0.4s;
-        }
-
-        .date {
-            font-size: 4vw;
-            font-weight: 400;
-            opacity: 0.6;
-            margin-top: 2vh;
-            text-align: center;
-            transition: opacity 0.4s;
-        }
-
-        .date.hidden {
-            display: none;
-        }
-
-        .controls {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-            background: rgba(30, 30, 30, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .toggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-        }
-
-        .toggle input {
-            display: none;
-        }
-
-        .toggle-switch {
-            width: 44px;
-            height: 24px;
-            background: #333;
-            border-radius: 12px;
+        .boot-logo {
+            font-size: 120px;
+            font-weight: 700;
+            color: #007AFF;
+            margin-bottom: 60px;
+            letter-spacing: -3px;
             position: relative;
-            cursor: pointer;
-            transition: background-color 0.3s;
         }
 
-        .toggle-switch::after {
+        .boot-logo::after {
             content: '';
             position: absolute;
-            width: 18px;
-            height: 18px;
-            background: white;
-            border-radius: 9px;
-            top: 3px;
-            left: 3px;
-            transition: transform 0.3s;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 8px;
+            background: linear-gradient(90deg, #007AFF, #34C759, #FF9500);
+            border-radius: 4px;
         }
 
-        .toggle input:checked + .toggle-switch {
-            background: #4a6fa5;
-        }
-
-        .toggle input:checked + .toggle-switch::after {
-            transform: translateX(20px);
-        }
-
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .slider {
-            width: 100px;
-            height: 6px;
-            background: #333;
-            border-radius: 3px;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-
-        .slider-value {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
-            min-width: 30px;
-        }
-
-        /* Night mode */
-        body.night-mode {
-            background: #000;
-        }
-
-        body.night-mode .time {
+        .boot-message {
+            font-size: 36px;
             font-weight: 500;
-            color: #d0d0d0;
+            color: #1D1D1F;
+            margin-bottom: 40px;
+            opacity: 0.8;
+            text-align: center;
         }
 
-        body.night-mode .date {
-            color: #aaa;
+        .boot-input-container {
+            background-color: #FFFFFF;
+            border-radius: 35px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            width: 500px;
+            max-width: 90%;
+            margin-top: 20px;
         }
 
-        /* Responsive */
+        .boot-input {
+            width: 100%;
+            padding: 25px;
+            font-size: 32px;
+            border: 3px solid #E5E5E7;
+            border-radius: 25px;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .boot-input:focus {
+            border-color: #007AFF;
+        }
+
+        .boot-submit {
+            width: 100%;
+            padding: 25px;
+            font-size: 32px;
+            background-color: #007AFF;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .boot-submit:hover {
+            background-color: #0056CC;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+        }
+
+        .welcome-message {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1D1D1F;
+            margin-top: 40px;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* Dashboard Styles */
+        #dashboard {
+            display: none;
+            padding: 60px;
+            height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .header-logo {
+            font-size: 64px;
+            font-weight: 700;
+            color: #007AFF;
+            letter-spacing: -2px;
+        }
+
+        .welcome-container {
+            background-color: #FFFFFF;
+            border-radius: 35px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            min-width: 400px;
+        }
+
+        .welcome-text {
+            font-size: 32px;
+            font-weight: 500;
+            color: #1D1D1F;
+        }
+
+        /* Main Content Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            height: calc(100vh - 200px);
+        }
+
+        /* Clock Section */
+        .clock-section {
+            background-color: #FFFFFF;
+            border-radius: 35px;
+            padding: 60px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .time-display {
+            font-size: 128px;
+            font-weight: 700;
+            color: #1D1D1F;
+            margin-bottom: 20px;
+            letter-spacing: -4px;
+        }
+
+        .date-display {
+            font-size: 48px;
+            color: #86868B;
+            font-weight: 500;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background-color: #FFFFFF;
+            border-radius: 35px;
+            padding: 60px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timer-title {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1D1D1F;
+            margin-bottom: 40px;
+        }
+
+        .timer-display {
+            font-size: 96px;
+            font-weight: 700;
+            color: #FF9500;
+            margin-bottom: 40px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .timer-btn {
+            padding: 30px;
+            font-size: 32px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .timer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-blue {
+            background-color: #007AFF;
+            color: white;
+        }
+
+        .btn-orange {
+            background-color: #FF9500;
+            color: white;
+        }
+
+        .btn-green {
+            background-color: #34C759;
+            color: white;
+        }
+
+        .clear-btn {
+            width: 100%;
+            padding: 30px;
+            font-size: 32px;
+            background-color: #FF3B30;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .clear-btn:hover {
+            background-color: #D70015;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 59, 48, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .time-display {
+                font-size: 96px;
+            }
+            
+            .timer-display {
+                font-size: 72px;
+            }
+        }
+
         @media (max-width: 768px) {
-            .time {
-                font-size: 25vw;
+            .header {
+                flex-direction: column;
+                gap: 20px;
             }
             
-            .date {
-                font-size: 5vw;
+            .time-display {
+                font-size: 72px;
             }
             
-            .controls {
-                flex-wrap: wrap;
-                justify-content: center;
-                width: 90%;
-                gap: 12px;
+            .date-display {
+                font-size: 32px;
+            }
+            
+            .timer-display {
+                font-size: 64px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="time" class="time">00:00</div>
-        <div id="date" class="date">Monday, January 1</div>
+    <!-- Boot Sequence -->
+    <div id="bootSequence">
+        <div class="boot-logo">Canvas</div>
+        <div class="boot-message">System Initializing</div>
+        <div class="boot-input-container">
+            <input type="text" id="userNameInput" class="boot-input" placeholder="Enter Name" autofocus>
+            <button id="bootSubmit" class="boot-submit">Continue</button>
+        </div>
+        <div id="welcomeMessage" class="welcome-message"></div>
     </div>
-    
-    <div class="controls">
-        <label class="toggle">
-            <input type="checkbox" id="formatToggle">
-            <span class="toggle-switch"></span>
-            <span>24h</span>
-        </label>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard">
+        <div class="header">
+            <div class="header-logo">Canvas</div>
+            <div class="welcome-container">
+                <div id="dashboardWelcome" class="welcome-text"></div>
+            </div>
+        </div>
         
-        <label class="toggle">
-            <input type="checkbox" id="dateToggle" checked>
-            <span class="toggle-switch"></span>
-            <span>Date</span>
-        </label>
-        
-        <label class="toggle">
-            <input type="checkbox" id="secondsToggle">
-            <span class="toggle-switch"></span>
-            <span>Seconds</span>
-        </label>
-        
-        <label class="toggle">
-            <input type="checkbox" id="nightModeToggle">
-            <span class="toggle-switch"></span>
-            <span>Night</span>
-        </label>
-        
-        <div class="slider-container">
-            <input type="range" id="brightnessSlider" class="slider" min="10" max="100" value="80">
-            <span class="slider-value" id="brightnessValue">80%</span>
+        <div class="main-content">
+            <div class="clock-section">
+                <div id="timeDisplay" class="time-display">00:00 AM</div>
+                <div id="dateDisplay" class="date-display">Monday, January 1</div>
+            </div>
+            
+            <div class="timer-section">
+                <div class="timer-title">Timer</div>
+                <div id="timerDisplay" class="timer-display">00:00</div>
+                <div class="timer-controls">
+                    <button class="timer-btn btn-blue" id="add1Min">+1m</button>
+                    <button class="timer-btn btn-orange" id="add5Min">+5m</button>
+                    <button class="timer-btn btn-green" id="startTimer">Start</button>
+                </div>
+                <button class="clear-btn" id="clearTimer">Clear</button>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Get elements
-        const timeElement = document.getElementById('time');
-        const dateElement = document.getElementById('date');
-        const formatToggle = document.getElementById('formatToggle');
-        const dateToggle = document.getElementById('dateToggle');
-        const secondsToggle = document.getElementById('secondsToggle');
-        const nightModeToggle = document.getElementById('nightModeToggle');
-        const brightnessSlider = document.getElementById('brightnessSlider');
-        const brightnessValue = document.getElementById('brightnessValue');
-
-        // Settings
-        let settings = {
-            is24Hour: false,
-            showDate: true,
-            showSeconds: false,
-            nightMode: false,
-            brightness: 80
-        };
-
-        // Initialize
-        function init() {
-            loadSettings();
-            updateControls();
-            updateDisplay();
-            
-            // Start clock
-            updateTime();
-            setInterval(updateTime, 100);
-            
-            // Event listeners
-            formatToggle.addEventListener('change', function() {
-                settings.is24Hour = this.checked;
-                saveSettings();
-                updateTime();
-            });
-            
-            dateToggle.addEventListener('change', function() {
-                settings.showDate = this.checked;
-                saveSettings();
-                updateDateVisibility();
-            });
-            
-            secondsToggle.addEventListener('change', function() {
-                settings.showSeconds = this.checked;
-                saveSettings();
-                updateTime();
-            });
-            
-            nightModeToggle.addEventListener('change', function() {
-                settings.nightMode = this.checked;
-                saveSettings();
-                updateNightMode();
-            });
-            
-            brightnessSlider.addEventListener('input', function() {
-                settings.brightness = this.value;
-                brightnessValue.textContent = this.value + '%';
-                saveSettings();
-                updateBrightness();
-            });
-        }
-
-        // Update time display
-        function updateTime() {
-            const now = new Date();
-            
-            let hours = now.getHours();
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            
-            let timeString;
-            if (settings.is24Hour) {
-                timeString = hours.toString().padStart(2, '0') + ':' + minutes;
-            } else {
-                const ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12 || 12;
-                timeString = hours + ':' + minutes + ' ' + ampm;
-            }
-            
-            if (settings.showSeconds) {
-                timeString = timeString.replace(':', ':') + ':' + seconds;
-                if (!settings.is24Hour) {
-                    timeString = timeString.replace(/(AM|PM)/, ':$2 $1');
-                }
-            }
-            
-            // Smooth update
-            timeElement.style.opacity = '0';
-            setTimeout(() => {
-                timeElement.textContent = timeString;
-                timeElement.style.opacity = '1';
-            }, 100);
-            
-            // Update date if needed
-            if (settings.showDate) {
-                updateDate(now);
-            }
-        }
-
-        // Update date
-        function updateDate(date) {
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            
-            const dayName = days[date.getDay()];
-            const monthName = months[date.getMonth()];
-            const dayNum = date.getDate();
-            
-            const dateString = `${dayName}, ${monthName} ${dayNum}`;
-            
-            if (dateElement.textContent !== dateString) {
-                dateElement.style.opacity = '0';
-                setTimeout(() => {
-                    dateElement.textContent = dateString;
-                    dateElement.style.opacity = '1';
-                }, 100);
-            }
-        }
-
-        // Update date visibility
-        function updateDateVisibility() {
-            if (settings.showDate) {
-                dateElement.classList.remove('hidden');
-                updateDate(new Date());
-            } else {
-                dateElement.classList.add('hidden');
-            }
-        }
-
-        // Update night mode
-        function updateNightMode() {
-            if (settings.nightMode) {
-                document.body.classList.add('night-mode');
-            } else {
-                document.body.classList.remove('night-mode');
-            }
-        }
-
-        // Update brightness
-        function updateBrightness() {
-            const brightness = settings.brightness / 100;
-            document.body.style.opacity = brightness;
-        }
-
-        // Update controls
-        function updateControls() {
-            formatToggle.checked = settings.is24Hour;
-            dateToggle.checked = settings.showDate;
-            secondsToggle.checked = settings.showSeconds;
-            nightModeToggle.checked = settings.nightMode;
-            brightnessSlider.value = settings.brightness;
-            brightnessValue.textContent = settings.brightness + '%';
-        }
-
-        // Update display
-        function updateDisplay() {
-            updateDateVisibility();
-            updateNightMode();
-            updateBrightness();
-        }
-
-        // Save settings
-        function saveSettings() {
-            localStorage.setItem('clockSettings', JSON.stringify(settings));
-        }
-
-        // Load settings
-        function loadSettings() {
-            const saved = localStorage.getItem('clockSettings');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    settings = parsed;
-                } catch(e) {
-                    // Use defaults
-                }
-            }
-        }
-
-        // Start on load
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+    <script src="renderer.js"></script>
 </body>
 </html>
