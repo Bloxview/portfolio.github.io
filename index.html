@@ -11,6 +11,8 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
@@ -18,7 +20,7 @@
             color: #1D1D1F;
             height: 100vh;
             overflow: hidden;
-            transition: background-color 0.5s ease;
+            transition: background-color 0.7s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         /* Boot Sequence Styles */
@@ -34,7 +36,7 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .boot-logo {
@@ -44,6 +46,7 @@
             margin-bottom: 60px;
             letter-spacing: -3px;
             position: relative;
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .boot-logo::after {
@@ -65,16 +68,19 @@
             margin-bottom: 40px;
             opacity: 0.8;
             text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .boot-input-container {
             background-color: #FFFFFF;
-            border-radius: 35px;
+            border-radius: 40px;
             padding: 30px 40px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
             width: 500px;
             max-width: 90%;
             margin-top: 20px;
+            transform: translateY(0);
+            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .boot-input {
@@ -85,7 +91,7 @@
             border-radius: 25px;
             outline: none;
             text-align: center;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease-out;
         }
 
         .boot-input:focus {
@@ -102,7 +108,8 @@
             border-radius: 25px;
             margin-top: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease-out;
+            user-select: none;
         }
 
         .boot-submit:hover {
@@ -111,13 +118,19 @@
             box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
         }
 
+        .boot-submit:active {
+            transform: scale(0.96);
+            transition-duration: 100ms;
+        }
+
         .welcome-message {
             font-size: 48px;
             font-weight: 600;
             color: #1D1D1F;
             margin-top: 40px;
             opacity: 0;
-            transition: opacity 1s ease;
+            transform: translateY(20px);
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         /* Dashboard Styles */
@@ -125,6 +138,7 @@
             display: none;
             padding: 60px;
             height: 100vh;
+            opacity: 0;
         }
 
         .header {
@@ -132,6 +146,9 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 60px;
+            transform: translateY(-30px);
+            opacity: 0;
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .header-logo {
@@ -143,10 +160,12 @@
 
         .welcome-container {
             background-color: #FFFFFF;
-            border-radius: 35px;
+            border-radius: 40px;
             padding: 30px 40px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
             min-width: 400px;
+            transform: scale(0.9);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .welcome-text {
@@ -166,13 +185,16 @@
         /* Clock Section */
         .clock-section {
             background-color: #FFFFFF;
-            border-radius: 35px;
+            border-radius: 40px;
             padding: 60px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            transform: translateY(100px) scale(0.9);
+            opacity: 0;
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .time-display {
@@ -180,7 +202,8 @@
             font-weight: 700;
             color: #1D1D1F;
             margin-bottom: 20px;
-            letter-spacing: -4px;
+            letter-spacing: -5px;
+            font-variant-numeric: tabular-nums;
         }
 
         .date-display {
@@ -192,12 +215,16 @@
         /* Timer Section */
         .timer-section {
             background-color: #FFFFFF;
-            border-radius: 35px;
+            border-radius: 40px;
             padding: 60px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
+            transform: translateY(100px) scale(0.9);
+            opacity: 0;
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition-delay: 0.1s;
         }
 
         .timer-title {
@@ -213,6 +240,11 @@
             color: #FF9500;
             margin-bottom: 40px;
             font-variant-numeric: tabular-nums;
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timer-running {
+            animation: pulse 2s ease-in-out infinite;
         }
 
         .timer-controls {
@@ -229,13 +261,19 @@
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease-out;
             font-weight: 600;
+            user-select: none;
         }
 
         .timer-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer-btn:active {
+            transform: scale(0.96);
+            transition-duration: 100ms;
         }
 
         .btn-blue {
@@ -262,14 +300,53 @@
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease-out;
             font-weight: 600;
+            user-select: none;
         }
 
         .clear-btn:hover {
             background-color: #D70015;
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(255, 59, 48, 0.2);
+        }
+
+        .clear-btn:active {
+            transform: scale(0.96);
+            transition-duration: 100ms;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes springIn {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(0.9);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         /* Responsive Design */
@@ -281,6 +358,7 @@
             
             .time-display {
                 font-size: 96px;
+                letter-spacing: -4px;
             }
             
             .timer-display {
@@ -294,8 +372,14 @@
                 gap: 20px;
             }
             
+            .welcome-container {
+                min-width: auto;
+                width: 100%;
+            }
+            
             .time-display {
                 font-size: 72px;
+                letter-spacing: -3px;
             }
             
             .date-display {
@@ -304,6 +388,10 @@
             
             .timer-display {
                 font-size: 64px;
+            }
+            
+            #dashboard {
+                padding: 30px;
             }
         }
     </style>
