@@ -3,762 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apple Music Lyric Animation Simulator</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Home Clock</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #fff;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: #0a0a0a;
+            color: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            transition: background-color 0.4s, color 0.4s;
         }
-        
+
         .container {
-            max-width: 1000px;
-            width: 100%;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 8px;
-            background: linear-gradient(90deg, #ff7e5f, #feb47b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.5px;
-        }
-        
-        .subtitle {
-            color: #aaa;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        
-        .app-logo {
-            font-size: 2.5rem;
-            color: #ff2d55;
-            margin-bottom: 10px;
-        }
-        
-        .app-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
             justify-content: center;
-        }
-        
-        .input-panel, .lyrics-display {
-            background: rgba(20, 20, 30, 0.8);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .input-panel {
-            max-width: 450px;
-        }
-        
-        .panel-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            display: flex;
             align-items: center;
-            gap: 10px;
-            color: #fff;
+            padding: 20px;
         }
-        
-        .panel-title i {
-            color: #ff2d55;
+
+        .time {
+            font-size: 20vw;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -2px;
+            text-align: center;
+            transition: opacity 0.4s;
         }
-        
-        .lyrics-textarea {
-            width: 100%;
-            height: 300px;
-            background: rgba(10, 10, 20, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            color: #fff;
-            font-size: 1rem;
-            padding: 15px;
-            resize: vertical;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            transition: border 0.3s;
+
+        .date {
+            font-size: 4vw;
+            font-weight: 400;
+            opacity: 0.6;
+            margin-top: 2vh;
+            text-align: center;
+            transition: opacity 0.4s;
         }
-        
-        .lyrics-textarea:focus {
-            outline: none;
-            border-color: #ff2d55;
+
+        .date.hidden {
+            display: none;
         }
-        
-        .button-group {
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
-            flex-wrap: wrap;
             gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .btn {
-            padding: 12px 20px;
+            background: rgba(30, 30, 30, 0.8);
+            padding: 15px;
             border-radius: 10px;
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            transition: all 0.3s;
-            flex: 1;
-            min-width: 140px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
         }
-        
-        .btn-primary {
-            background: linear-gradient(90deg, #ff2d55, #ff375f);
-            color: white;
+
+        .toggle input {
+            display: none;
         }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 45, 85, 0.4);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .audio-controls {
-            background: rgba(10, 10, 20, 0.7);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 15px;
-        }
-        
-        .time-display {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-        
-        .progress-bar {
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin-bottom: 20px;
-            overflow: hidden;
-        }
-        
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, #ff2d55, #ff7e5f);
-            width: 0%;
-            border-radius: 3px;
-            transition: width 0.1s;
-        }
-        
-        .control-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .control-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            transition: all 0.3s;
-        }
-        
-        .control-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .play-btn {
-            background: linear-gradient(90deg, #ff2d55, #ff375f);
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-        }
-        
-        .lyrics-display {
-            height: 600px;
-            overflow: hidden;
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #333;
+            border-radius: 12px;
             position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
-        
-        .lyrics-container {
-            padding: 20px;
-            height: 100%;
-            overflow-y: auto;
-            text-align: center;
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 9px;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+
+        .toggle input:checked + .toggle-switch {
+            background: #4a6fa5;
+        }
+
+        .toggle input:checked + .toggle-switch::after {
+            transform: translateX(20px);
+        }
+
+        .slider-container {
             display: flex;
-            flex-direction: column;
-            gap: 25px;
             align-items: center;
-            justify-content: center;
-        }
-        
-        .lyrics-container::-webkit-scrollbar {
-            width: 5px;
-        }
-        
-        .lyrics-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-        }
-        
-        .lyric-line {
-            font-size: 2.5rem;
-            line-height: 1.3;
-            color: rgba(255, 255, 255, 0.4);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 90%;
-            text-align: center;
-            padding: 10px 20px;
-            border-radius: 10px;
-        }
-        
-        .lyric-line.active {
-            color: white;
-            font-size: 3.2rem;
-            font-weight: 700;
-            text-shadow: 0 0 20px rgba(255, 45, 85, 0.5);
-            background: rgba(255, 45, 85, 0.1);
-            transform: scale(1.05);
-        }
-        
-        .lyric-line.past {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 2rem;
-        }
-        
-        .demo-presets {
-            margin-top: 20px;
-        }
-        
-        .preset-title {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #aaa;
-        }
-        
-        .preset-buttons {
-            display: flex;
-            flex-wrap: wrap;
             gap: 10px;
         }
-        
-        .preset-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 20px;
+
+        .slider {
+            width: 100px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
             cursor: pointer;
-            transition: all 0.3s;
         }
-        
-        .preset-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+
+        .slider-value {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            min-width: 30px;
         }
-        
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            color: #777;
-            font-size: 0.9rem;
-            padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 1000px;
+
+        /* Night mode */
+        body.night-mode {
+            background: #000;
         }
-        
-        .instructions {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            line-height: 1.5;
+
+        body.night-mode .time {
+            font-weight: 500;
+            color: #d0d0d0;
         }
-        
+
+        body.night-mode .date {
+            color: #aaa;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
+            .time {
+                font-size: 25vw;
             }
             
-            .lyric-line {
-                font-size: 2rem;
+            .date {
+                font-size: 5vw;
             }
             
-            .lyric-line.active {
-                font-size: 2.5rem;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
+            .controls {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 90%;
+                gap: 12px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="app-logo">
-                <i class="fab fa-apple"></i>
-            </div>
-            <h1>Lyric Animation Simulator</h1>
-            <p class="subtitle">Apple Music-style synchronized lyrics with dynamic animation</p>
-        </header>
+        <div id="time" class="time">00:00</div>
+        <div id="date" class="date">Monday, January 1</div>
+    </div>
+    
+    <div class="controls">
+        <label class="toggle">
+            <input type="checkbox" id="formatToggle">
+            <span class="toggle-switch"></span>
+            <span>24h</span>
+        </label>
         
-        <div class="app-container">
-            <div class="input-panel">
-                <h2 class="panel-title"><i class="fas fa-edit"></i> Lyric Input</h2>
-                <textarea class="lyrics-textarea" id="lyricsInput" placeholder="Paste your lyrics here, one line per lyric...&#10;&#10;Example:&#10;[00:00] Welcome to the show&#10;[00:03] Let's begin the story&#10;[00:06] With every word we'll glow&#10;[00:09] In animated glory">[00:00] Welcome to the lyric animation show
-[00:03] Where words come alive and dynamically flow
-[00:06] With every beat and every line you'll see
-[00:09] A synchronized display for all to be
-[00:12] 
-[00:15] This is how Apple Music makes it right
-[00:18] With smooth animations that are out of sight
-[00:21] Highlighting lyrics in time with the song
-[00:24] Making you feel like you truly belong
-[00:27] 
-[00:30] Now you can create your very own
-[00:33] With this simulator that we have grown
-[00:36] Paste your lyrics and press the start
-[00:39] To see the magic play its part
-[00:42] 
-[00:45] Watch as each line highlights in time
-[00:48] With smooth transitions that truly shine
-[00:51] This is the future of lyric display
-[00:54] Enjoy the show, have a wonderful day!</textarea>
-                
-                <div class="button-group">
-                    <button class="btn btn-primary" id="startBtn">
-                        <i class="fas fa-play"></i> Start Animation
-                    </button>
-                    <button class="btn btn-secondary" id="resetBtn">
-                        <i class="fas fa-redo"></i> Reset
-                    </button>
-                </div>
-                
-                <div class="demo-presets">
-                    <div class="preset-title">Demo Presets:</div>
-                    <div class="preset-buttons">
-                        <button class="preset-btn" data-preset="pop">Pop Song</button>
-                        <button class="preset-btn" data-preset="rock">Rock Anthem</button>
-                        <button class="preset-btn" data-preset="hiphop">Hip Hop</button>
-                        <button class="preset-btn" data-preset="custom">Custom Timing</button>
-                    </div>
-                </div>
-                
-                <div class="instructions">
-                    <p><strong>Instructions:</strong> Paste lyrics in the text box (one line per lyric). Use <code>[MM:SS]</code> format for timestamps, or leave blank for auto-timing. Click "Start Animation" to begin.</p>
-                </div>
-                
-                <div class="audio-controls">
-                    <div class="time-display">
-                        <span id="currentTime">0:00</span>
-                        <span id="totalTime">3:00</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress" id="progress"></div>
-                    </div>
-                    <div class="control-buttons">
-                        <button class="control-btn" id="rewindBtn">
-                            <i class="fas fa-backward"></i>
-                        </button>
-                        <button class="control-btn play-btn" id="playBtn">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <button class="control-btn" id="forwardBtn">
-                            <i class="fas fa-forward"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="lyrics-display">
-                <h2 class="panel-title"><i class="fas fa-music"></i> Lyric Animation</h2>
-                <div class="lyrics-container" id="lyricsContainer">
-                    <div class="lyric-line">Lyrics will appear here</div>
-                    <div class="lyric-line">Paste your lyrics and click "Start Animation"</div>
-                    <div class="lyric-line">To see the Apple Music-style animation</div>
-                </div>
-            </div>
+        <label class="toggle">
+            <input type="checkbox" id="dateToggle" checked>
+            <span class="toggle-switch"></span>
+            <span>Date</span>
+        </label>
+        
+        <label class="toggle">
+            <input type="checkbox" id="secondsToggle">
+            <span class="toggle-switch"></span>
+            <span>Seconds</span>
+        </label>
+        
+        <label class="toggle">
+            <input type="checkbox" id="nightModeToggle">
+            <span class="toggle-switch"></span>
+            <span>Night</span>
+        </label>
+        
+        <div class="slider-container">
+            <input type="range" id="brightnessSlider" class="slider" min="10" max="100" value="80">
+            <span class="slider-value" id="brightnessValue">80%</span>
         </div>
-        
-        <footer>
-            <p>Apple Music Lyric Animation Simulator | Created with HTML, CSS & JavaScript</p>
-            <p>This is a simulation for educational purposes only.</p>
-        </footer>
     </div>
 
     <script>
-        // DOM Elements
-        const lyricsInput = document.getElementById('lyricsInput');
-        const lyricsContainer = document.getElementById('lyricsContainer');
-        const startBtn = document.getElementById('startBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const playBtn = document.getElementById('playBtn');
-        const rewindBtn = document.getElementById('rewindBtn');
-        const forwardBtn = document.getElementById('forwardBtn');
-        const progress = document.getElementById('progress');
-        const currentTimeEl = document.getElementById('currentTime');
-        const totalTimeEl = document.getElementById('totalTime');
-        const presetButtons = document.querySelectorAll('.preset-btn');
-        
-        // Animation variables
-        let lyrics = [];
-        let currentLine = 0;
-        let isPlaying = false;
-        let animationInterval;
-        let startTime = 0;
-        let elapsedTime = 0;
-        let totalDuration = 180; // 3 minutes in seconds
-        let lineTimings = [];
-        
-        // Demo lyric presets
-        const presets = {
-            pop: `[00:00] I'm walking on sunshine, whoa oh
-[00:04] And don't it feel good?
-[00:08] I'm walking on sunshine, whoa oh
-[00:12] And don't it feel good?
-[00:16] I feel alive, I feel the love
-[00:20] I feel the love that's really real
-[00:24] I'm walking on sunshine, whoa oh
-[00:28] And don't it feel good?`,
-            
-            rock: `[00:00] WE WILL, WE WILL ROCK YOU
-[00:04] WE WILL, WE WILL ROCK YOU
-[00:08] Buddy, you're a boy, make a big noise
-[00:12] Playing in the street, gonna be a big man someday
-[00:16] You got mud on your face, you big disgrace
-[00:20] Kicking your can all over the place, singin'
-[00:24] WE WILL, WE WILL ROCK YOU
-[00:28] WE WILL, WE WILL ROCK YOU`,
-            
-            hiphop: `[00:00] Now this is a story all about how
-[00:03] My life got flipped turned upside down
-[00:06] And I'd like to take a minute, just sit right there
-[00:09] I'll tell you how I became the prince of a town called Bel-Air
-[00:13] In West Philadelphia born and raised
-[00:16] On the playground is where I spent most of my days
-[00:19] Chillin' out, maxin', relaxin' all cool
-[00:22] And all shootin' some b-ball outside of the school`,
-            
-            custom: `[00:00] This is a custom timed example
-[00:05] Each line has specific timing
-[00:10] You can control when each line appears
-[00:15] By using the [MM:SS] format
-[00:20] Lines without timing will auto-fill
-[00:25] Creating a smooth flowing animation
-[00:30] Just like in Apple Music
-[00:35] Try it with your own lyrics!`
+        // Get elements
+        const timeElement = document.getElementById('time');
+        const dateElement = document.getElementById('date');
+        const formatToggle = document.getElementById('formatToggle');
+        const dateToggle = document.getElementById('dateToggle');
+        const secondsToggle = document.getElementById('secondsToggle');
+        const nightModeToggle = document.getElementById('nightModeToggle');
+        const brightnessSlider = document.getElementById('brightnessSlider');
+        const brightnessValue = document.getElementById('brightnessValue');
+
+        // Settings
+        let settings = {
+            is24Hour: false,
+            showDate: true,
+            showSeconds: false,
+            nightMode: false,
+            brightness: 80
         };
-        
-        // Event Listeners
-        startBtn.addEventListener('click', startAnimation);
-        resetBtn.addEventListener('click', resetAnimation);
-        playBtn.addEventListener('click', togglePlay);
-        rewindBtn.addEventListener('click', rewind);
-        forwardBtn.addEventListener('click', forward);
-        
-        // Preset buttons
-        presetButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const preset = btn.getAttribute('data-preset');
-                lyricsInput.value = presets[preset];
-            });
-        });
-        
-        // Parse lyrics from text input
-        function parseLyrics(text) {
-            const lines = text.split('\n').filter(line => line.trim() !== '');
-            const parsedLyrics = [];
-            const timings = [];
+
+        // Initialize
+        function init() {
+            loadSettings();
+            updateControls();
+            updateDisplay();
             
-            // If no timestamps are found, auto-generate them
-            const hasTimestamps = text.includes('[') && text.includes(']');
+            // Start clock
+            updateTime();
+            setInterval(updateTime, 100);
             
-            let time = 0;
-            const autoIncrement = 3; // 3 seconds per line if no timestamp
-            
-            lines.forEach((line, index) => {
-                // Try to extract timestamp
-                const timestampMatch = line.match(/\[(\d{2}):(\d{2})\]/);
-                
-                if (timestampMatch && hasTimestamps) {
-                    const minutes = parseInt(timestampMatch[1]);
-                    const seconds = parseInt(timestampMatch[2]);
-                    time = minutes * 60 + seconds;
-                    
-                    // Remove timestamp from lyric text
-                    line = line.replace(/\[\d{2}:\d{2}\]/, '').trim();
-                } else {
-                    // Auto-increment time for lines without timestamps
-                    if (index > 0) time += autoIncrement;
-                }
-                
-                if (line) {
-                    parsedLyrics.push(line);
-                    timings.push(time);
-                }
+            // Event listeners
+            formatToggle.addEventListener('change', function() {
+                settings.is24Hour = this.checked;
+                saveSettings();
+                updateTime();
             });
             
-            // Adjust total duration based on last timing
-            if (timings.length > 0) {
-                totalDuration = timings[timings.length - 1] + 10; // Add 10 seconds after last line
-            }
-            
-            return { lyrics: parsedLyrics, timings: timings };
-        }
-        
-        // Start the animation
-        function startAnimation() {
-            resetAnimation();
-            
-            const inputText = lyricsInput.value.trim();
-            if (!inputText) {
-                alert('Please paste some lyrics first!');
-                return;
-            }
-            
-            const parsed = parseLyrics(inputText);
-            lyrics = parsed.lyrics;
-            lineTimings = parsed.timings;
-            
-            if (lyrics.length === 0) {
-                alert('No valid lyrics found!');
-                return;
-            }
-            
-            // Display lyrics
-            displayLyrics();
-            
-            // Set total time display
-            totalTimeEl.textContent = formatTime(totalDuration);
-            
-            // Start playback
-            togglePlay();
-        }
-        
-        // Display lyrics in the container
-        function displayLyrics() {
-            lyricsContainer.innerHTML = '';
-            
-            lyrics.forEach((lyric, index) => {
-                const lyricElement = document.createElement('div');
-                lyricElement.className = 'lyric-line';
-                lyricElement.textContent = lyric;
-                lyricElement.dataset.index = index;
-                lyricsContainer.appendChild(lyricElement);
+            dateToggle.addEventListener('change', function() {
+                settings.showDate = this.checked;
+                saveSettings();
+                updateDateVisibility();
             });
             
-            // Center the active line
-            setTimeout(() => {
-                if (lyricsContainer.children.length > 0) {
-                    lyricsContainer.children[0].scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }
-            }, 100);
+            secondsToggle.addEventListener('change', function() {
+                settings.showSeconds = this.checked;
+                saveSettings();
+                updateTime();
+            });
+            
+            nightModeToggle.addEventListener('change', function() {
+                settings.nightMode = this.checked;
+                saveSettings();
+                updateNightMode();
+            });
+            
+            brightnessSlider.addEventListener('input', function() {
+                settings.brightness = this.value;
+                brightnessValue.textContent = this.value + '%';
+                saveSettings();
+                updateBrightness();
+            });
         }
-        
-        // Toggle play/pause
-        function togglePlay() {
-            if (!lyrics.length) {
-                alert('Please start the animation first!');
-                return;
-            }
+
+        // Update time display
+        function updateTime() {
+            const now = new Date();
             
-            isPlaying = !isPlaying;
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
             
-            if (isPlaying) {
-                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                startAnimationLoop();
+            let timeString;
+            if (settings.is24Hour) {
+                timeString = hours.toString().padStart(2, '0') + ':' + minutes;
             } else {
-                playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                clearInterval(animationInterval);
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                timeString = hours + ':' + minutes + ' ' + ampm;
             }
-        }
-        
-        // Animation loop
-        function startAnimationLoop() {
-            if (animationInterval) clearInterval(animationInterval);
             
-            startTime = Date.now() - elapsedTime * 1000;
-            
-            animationInterval = setInterval(() => {
-                elapsedTime = (Date.now() - startTime) / 1000;
-                
-                // Update progress bar and time display
-                const progressPercent = (elapsedTime / totalDuration) * 100;
-                progress.style.width = `${Math.min(progressPercent, 100)}%`;
-                currentTimeEl.textContent = formatTime(elapsedTime);
-                
-                // Find current lyric line based on timing
-                let newCurrentLine = 0;
-                for (let i = 0; i < lineTimings.length; i++) {
-                    if (elapsedTime >= lineTimings[i]) {
-                        newCurrentLine = i;
-                    }
-                }
-                
-                // Update lyric highlighting if line changed
-                if (newCurrentLine !== currentLine) {
-                    currentLine = newCurrentLine;
-                    updateLyricHighlight();
-                    
-                    // Scroll to keep current line in view
-                    const activeElement = document.querySelector('.lyric-line.active');
-                    if (activeElement) {
-                        activeElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                    }
-                }
-                
-                // Stop at the end
-                if (elapsedTime >= totalDuration) {
-                    clearInterval(animationInterval);
-                    isPlaying = false;
-                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-                }
-            }, 50); // Update every 50ms for smooth animation
-        }
-        
-        // Update lyric highlighting
-        function updateLyricHighlight() {
-            const lyricElements = document.querySelectorAll('.lyric-line');
-            
-            lyricElements.forEach((element, index) => {
-                element.classList.remove('active', 'past');
-                
-                if (index === currentLine) {
-                    element.classList.add('active');
-                } else if (index < currentLine) {
-                    element.classList.add('past');
-                }
-            });
-        }
-        
-        // Reset animation
-        function resetAnimation() {
-            clearInterval(animationInterval);
-            isPlaying = false;
-            playBtn.innerHTML = '<i class="fas fa-play"></i>';
-            currentLine = 0;
-            elapsedTime = 0;
-            progress.style.width = '0%';
-            currentTimeEl.textContent = '0:00';
-            
-            // Reset lyric highlighting
-            const lyricElements = document.querySelectorAll('.lyric-line');
-            lyricElements.forEach(element => {
-                element.classList.remove('active', 'past');
-            });
-            
-            // Reset display to initial state if no lyrics are loaded
-            if (!lyrics.length) {
-                lyricsContainer.innerHTML = `
-                    <div class="lyric-line">Lyrics will appear here</div>
-                    <div class="lyric-line">Paste your lyrics and click "Start Animation"</div>
-                    <div class="lyric-line">To see the Apple Music-style animation</div>
-                `;
-            }
-        }
-        
-        // Rewind 10 seconds
-        function rewind() {
-            if (!lyrics.length) return;
-            
-            elapsedTime = Math.max(0, elapsedTime - 10);
-            startTime = Date.now() - elapsedTime * 1000;
-            
-            // Update current line based on new time
-            for (let i = 0; i < lineTimings.length; i++) {
-                if (elapsedTime >= lineTimings[i]) {
-                    currentLine = i;
+            if (settings.showSeconds) {
+                timeString = timeString.replace(':', ':') + ':' + seconds;
+                if (!settings.is24Hour) {
+                    timeString = timeString.replace(/(AM|PM)/, ':$2 $1');
                 }
             }
             
-            updateLyricHighlight();
-        }
-        
-        // Forward 10 seconds
-        function forward() {
-            if (!lyrics.length) return;
-            
-            elapsedTime = Math.min(totalDuration, elapsedTime + 10);
-            startTime = Date.now() - elapsedTime * 1000;
-            
-            // Update current line based on new time
-            for (let i = 0; i < lineTimings.length; i++) {
-                if (elapsedTime >= lineTimings[i]) {
-                    currentLine = i;
-                }
-            }
-            
-            updateLyricHighlight();
-        }
-        
-        // Format time as MM:SS
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-        
-        // Initialize with some sample lyrics
-        window.addEventListener('DOMContentLoaded', () => {
-            // Set up a sample animation on load
+            // Smooth update
+            timeElement.style.opacity = '0';
             setTimeout(() => {
-                startAnimation();
-            }, 1000);
-        });
+                timeElement.textContent = timeString;
+                timeElement.style.opacity = '1';
+            }, 100);
+            
+            // Update date if needed
+            if (settings.showDate) {
+                updateDate(now);
+            }
+        }
+
+        // Update date
+        function updateDate(date) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const dayName = days[date.getDay()];
+            const monthName = months[date.getMonth()];
+            const dayNum = date.getDate();
+            
+            const dateString = `${dayName}, ${monthName} ${dayNum}`;
+            
+            if (dateElement.textContent !== dateString) {
+                dateElement.style.opacity = '0';
+                setTimeout(() => {
+                    dateElement.textContent = dateString;
+                    dateElement.style.opacity = '1';
+                }, 100);
+            }
+        }
+
+        // Update date visibility
+        function updateDateVisibility() {
+            if (settings.showDate) {
+                dateElement.classList.remove('hidden');
+                updateDate(new Date());
+            } else {
+                dateElement.classList.add('hidden');
+            }
+        }
+
+        // Update night mode
+        function updateNightMode() {
+            if (settings.nightMode) {
+                document.body.classList.add('night-mode');
+            } else {
+                document.body.classList.remove('night-mode');
+            }
+        }
+
+        // Update brightness
+        function updateBrightness() {
+            const brightness = settings.brightness / 100;
+            document.body.style.opacity = brightness;
+        }
+
+        // Update controls
+        function updateControls() {
+            formatToggle.checked = settings.is24Hour;
+            dateToggle.checked = settings.showDate;
+            secondsToggle.checked = settings.showSeconds;
+            nightModeToggle.checked = settings.nightMode;
+            brightnessSlider.value = settings.brightness;
+            brightnessValue.textContent = settings.brightness + '%';
+        }
+
+        // Update display
+        function updateDisplay() {
+            updateDateVisibility();
+            updateNightMode();
+            updateBrightness();
+        }
+
+        // Save settings
+        function saveSettings() {
+            localStorage.setItem('clockSettings', JSON.stringify(settings));
+        }
+
+        // Load settings
+        function loadSettings() {
+            const saved = localStorage.getItem('clockSettings');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    settings = parsed;
+                } catch(e) {
+                    // Use defaults
+                }
+            }
+        }
+
+        // Start on load
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
