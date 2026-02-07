@@ -1,25 +1,15 @@
 {
-  "name": "home-clock",
+  "name": "canvas-smart-display",
   "version": "1.0.0",
-  "description": "Minimal home clock",
+  "description": "A self-built home smart display with Apple-classic UI",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder"
+    "start": "electron ."
   },
+  "keywords": ["smart-display", "dashboard", "electron"],
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
-    "electron": "^25.0.0",
-    "electron-builder": "^24.0.0"
-  },
-  "build": {
-    "appId": "com.yourname.homeclock",
-    "productName": "Home Clock",
-    "directories": {
-      "output": "dist"
-    },
-    "mac": {
-      "category": "public.app-category.utilities",
-      "icon": "icon.icns"
-    }
+    "electron": "^28.0.0"
   }
 }
