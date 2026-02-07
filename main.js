@@ -11,6 +11,7 @@ function createWindow() {
     minHeight: 600,
     frame: false,
     backgroundColor: '#F5F5F7',
+    show: false, // Don't show until ready
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -23,6 +24,11 @@ function createWindow() {
 
   // Remove menu bar for cleaner look
   mainWindow.setMenuBarVisibility(false);
+  
+  // Show window when content is ready
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 }
 
 app.whenReady().then(() => {
