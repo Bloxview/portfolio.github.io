@@ -1,66 +1,38 @@
-const { app, BrowserWindow, screen } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 
 let mainWindow;
 
 function createWindow() {
-  // Get primary display info
-  const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
-  
-  // Create the browser window
   mainWindow = new BrowserWindow({
-    width: width,
-    height: height,
-    x: 0,
-    y: 0,
-    fullscreen: true, // Start in fullscreen
-    frame: false, // No window borders
-    alwaysOnTop: true, // Stay on top
-    kiosk: true, // Kiosk mode (cannot exit fullscreen)
+    width: 1200,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    frame: false,
+    backgroundColor: '#F5F5F7',
     webPreferences: {
       nodeIntegration: false,
-      contextIsolation: true
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
     }
   });
-  
-  // Load your HTML file
+
+  // Load the index.html
   mainWindow.loadFile('index.html');
-  
-  // Disable dev tools for final version (uncomment when ready)
-  // mainWindow.webContents.on('devtools-opened', () => {
-  //   mainWindow.webContents.closeDevTools();
-  // });
-  
-  // Prevent app from closing
-  mainWindow.on('close', (event) => {
-    event.preventDefault();
-  });
+
+  // Remove menu bar for cleaner look
+  mainWindow.setMenuBarVisibility(false);
 }
 
-// When Electron is ready
 app.whenReady().then(() => {
   createWindow();
-  
-  // Disable screensaver/power saving
-  const { powerSaveBlocker } = require('electron');
-  powerSaveBlocker.start('prevent-display-sleep');
-  
-  // Disable menu bar
-  mainWindow.setMenuBarVisibility(false);
-  mainWindow.setAutoHideMenuBar(true);
+
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
 });
 
-// Quit when all windows are closed (except on macOS)
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-// Re-create window on macOS dock click
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit();
 });
