@@ -1,40 +1,17 @@
 {
   "name": "canvas-smart-display",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A modular smart display system with Apple-classic UI",
   "main": "main.js",
   "scripts": {
-    "start": "NODE_ENV=development electron .",
-    "build": "electron-builder",
-    "flash": "node flash-update.js"
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder"
   },
-  "keywords": ["smart-display", "dashboard", "electron", "modular"],
+  "keywords": ["smart-display", "dashboard", "electron"],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^28.0.0",
-    "electron-builder": "^24.0.0",
-    "chokidar": "^3.5.3"
-  },
-  "dependencies": {},
-  "build": {
-    "appId": "com.canvas.display",
-    "productName": "Canvas",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!.editorconfig",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
-    ]
+    "electron": "^28.0.0"
   }
 }
