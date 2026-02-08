@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Canvas</title>
     <style>
-        /* Reset and Base Styles */
+        /* Reset and System Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
@@ -20,250 +20,223 @@
             color: #1D1D1F;
             height: 100vh;
             overflow: hidden;
-            transition: background-color 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Boot Sequence Styles */
+        /* Boot Sequence */
         #bootSequence {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #F5F5F7;
+            background: linear-gradient(135deg, #F5F5F7 0%, #FFFFFF 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            z-index: 10000;
+            transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .boot-logo {
-            font-size: 120px;
-            font-weight: 700;
-            color: #007AFF;
-            margin-bottom: 60px;
-            letter-spacing: -3px;
+            font-size: 140px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 40px;
+            letter-spacing: -4px;
             position: relative;
-            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .boot-logo::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
+        .boot-progress {
+            width: 400px;
             height: 8px;
-            background: linear-gradient(90deg, #007AFF, #34C759, #FF9500);
+            background: rgba(0, 122, 255, 0.1);
             border-radius: 4px;
+            overflow: hidden;
+            margin: 40px 0;
+        }
+
+        .boot-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #34C759);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .boot-message {
-            font-size: 36px;
+            font-size: 24px;
             font-weight: 500;
-            color: #1D1D1F;
-            margin-bottom: 40px;
-            opacity: 0.8;
-            text-align: center;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .boot-input-container {
-            background-color: #FFFFFF;
-            border-radius: 40px;
-            padding: 30px 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-            width: 500px;
-            max-width: 90%;
+            color: #86868B;
             margin-top: 20px;
-            transform: translateY(0);
-            transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .boot-input {
-            width: 100%;
-            padding: 25px;
-            font-size: 32px;
-            border: 3px solid #E5E5E7;
-            border-radius: 25px;
-            outline: none;
+            height: 28px;
             text-align: center;
-            transition: border-color 0.3s ease-out;
         }
 
-        .boot-input:focus {
-            border-color: #007AFF;
+        .calibration-dot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #007AFF;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: calibrationPulse 1s ease-in-out;
         }
 
-        .boot-submit {
-            width: 100%;
-            padding: 25px;
-            font-size: 32px;
-            background-color: #007AFF;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            margin-top: 20px;
-            cursor: pointer;
-            transition: all 0.15s ease-out;
-            user-select: none;
+        @keyframes calibrationPulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
         }
 
-        .boot-submit:hover {
-            background-color: #0056CC;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
-        }
-
-        .boot-submit:active {
-            transform: scale(0.96);
-            transition-duration: 100ms;
-        }
-
-        .welcome-message {
-            font-size: 48px;
-            font-weight: 600;
-            color: #1D1D1F;
-            margin-top: 40px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Dashboard Styles */
-        #dashboard {
-            display: none;
-            padding: 60px;
-            height: 100vh;
-            opacity: 0;
-        }
-
-        .header {
+        /* Main Interface - Vertical Stack */
+        #mainInterface {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 60px;
-            transform: translateY(-30px);
+            flex-direction: column;
             opacity: 0;
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .header-logo {
-            font-size: 64px;
-            font-weight: 700;
-            color: #007AFF;
-            letter-spacing: -2px;
-        }
-
-        .welcome-container {
-            background-color: #FFFFFF;
-            border-radius: 40px;
-            padding: 30px 40px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-            min-width: 400px;
-            transform: scale(0.9);
-            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .welcome-text {
-            font-size: 32px;
-            font-weight: 500;
-            color: #1D1D1F;
-        }
-
-        /* Main Content Grid */
-        .main-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 60px;
-            height: calc(100vh - 200px);
-        }
-
-        /* Clock Section */
-        .clock-section {
-            background-color: #FFFFFF;
-            border-radius: 40px;
-            padding: 60px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        /* Hero Clock View */
+        .clock-view {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transform: translateY(100px) scale(0.9);
-            opacity: 0;
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 60px;
+            position: relative;
         }
 
-        .time-display {
-            font-size: 128px;
-            font-weight: 700;
+        .time-container {
+            position: relative;
+        }
+
+        #timeDisplay {
+            font-size: 168px;
+            font-weight: 800;
             color: #1D1D1F;
-            margin-bottom: 20px;
-            letter-spacing: -5px;
+            letter-spacing: -8px;
             font-variant-numeric: tabular-nums;
+            text-shadow: 0 2px 30px rgba(0, 0, 0, 0.05);
+            line-height: 0.9;
         }
 
-        .date-display {
-            font-size: 48px;
+        #dateDisplay {
+            font-size: 36px;
             color: #86868B;
             font-weight: 500;
+            margin-top: 20px;
+            text-align: center;
         }
 
-        /* Timer Section */
-        .timer-section {
-            background-color: #FFFFFF;
-            border-radius: 40px;
-            padding: 60px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            transform: translateY(100px) scale(0.9);
-            opacity: 0;
-            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transition-delay: 0.1s;
+            opacity: 0.5;
+            animation: bounceHint 2s ease-in-out infinite;
         }
 
-        .timer-title {
+        .scroll-hint-icon {
+            width: 24px;
+            height: 40px;
+            border: 2px solid #86868B;
+            border-radius: 12px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .scroll-hint-icon::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: #86868B;
+            border-radius: 2px;
+            animation: scrollHint 2s ease-in-out infinite;
+        }
+
+        @keyframes bounceHint {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes scrollHint {
+            0% { top: 6px; opacity: 1; }
+            100% { top: 20px; opacity: 0; }
+        }
+
+        /* Timer View */
+        .timer-view {
+            min-height: 100vh;
+            background: #FFFFFF;
+            border-radius: 40px 40px 0 0;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.08);
+            transform: translateY(100vh);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .timer-view.active {
+            transform: translateY(0);
+        }
+
+        .timer-header {
             font-size: 48px;
             font-weight: 600;
             color: #1D1D1F;
             margin-bottom: 40px;
+            text-align: center;
         }
 
-        .timer-display {
-            font-size: 96px;
+        #timerDisplay {
+            font-size: 128px;
             font-weight: 700;
             color: #FF9500;
             margin-bottom: 40px;
             font-variant-numeric: tabular-nums;
-            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: -4px;
         }
 
-        .timer-running {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .timer-controls {
+        .timer-controls-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             width: 100%;
-            margin-bottom: 20px;
+            max-width: 600px;
+            margin-bottom: 30px;
         }
 
         .timer-btn {
             padding: 30px;
-            font-size: 32px;
+            font-size: 28px;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.15s ease-out;
             font-weight: 600;
             user-select: none;
+            background: #F5F5F7;
+            color: #1D1D1F;
         }
 
         .timer-btn:hover {
@@ -276,122 +249,451 @@
             transition-duration: 100ms;
         }
 
-        .btn-blue {
-            background-color: #007AFF;
+        .timer-btn.primary {
+            background: #007AFF;
             color: white;
         }
 
-        .btn-orange {
-            background-color: #FF9500;
+        .timer-btn.secondary {
+            background: #FF9500;
             color: white;
         }
 
-        .btn-green {
-            background-color: #34C759;
+        .timer-btn.danger {
+            background: #FF3B30;
             color: white;
         }
 
-        .clear-btn {
+        /* Settings Layer */
+        .settings-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 30px;
-            font-size: 32px;
-            background-color: #FF3B30;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-layer.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .settings-header {
+            padding: 60px 60px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .settings-title {
+            font-size: 48px;
+            font-weight: 700;
             color: white;
+        }
+
+        .settings-close {
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            border-radius: 25px;
+            color: white;
+            font-size: 24px;
             cursor: pointer;
-            transition: all 0.15s ease-out;
+            transition: all 0.2s ease;
+        }
+
+        .settings-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .settings-content {
+            flex: 1;
+            background: #FFFFFF;
+            border-radius: 40px 40px 0 0;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .settings-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
             font-weight: 600;
-            user-select: none;
+            color: #1D1D1F;
+            margin-bottom: 20px;
         }
 
-        .clear-btn:hover {
-            background-color: #D70015;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 59, 48, 0.2);
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #F5F5F7;
+            border-radius: 20px;
+            margin-bottom: 10px;
         }
 
-        .clear-btn:active {
-            transform: scale(0.96);
-            transition-duration: 100ms;
+        .settings-label {
+            font-size: 20px;
+            color: #1D1D1F;
         }
 
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-            100% { transform: scale(1); }
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
 
-        @keyframes springIn {
-            0% {
-                opacity: 0;
-                transform: translateY(100px) scale(0.9);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(-10px) scale(1.02);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E5E7;
+            transition: .4s;
+            border-radius: 34px;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-            
-            .time-display {
-                font-size: 96px;
-                letter-spacing: -4px;
-            }
-            
-            .timer-display {
-                font-size: 72px;
-            }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
 
+        input:checked + .toggle-slider {
+            background-color: #34C759;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .segmented-control {
+            display: flex;
+            background: #F5F5F7;
+            border-radius: 15px;
+            padding: 5px;
+        }
+
+        .segmented-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: #86868B;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .segmented-btn.active {
+            background: white;
+            color: #007AFF;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .slider-container {
+            width: 200px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 4px;
+            background: #E5E5E7;
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #007AFF;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Developer Overlay */
+        .dev-overlay {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-family: 'SF Mono', monospace;
+            z-index: 9999;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .dev-info {
+            display: flex;
+            gap: 15px;
+        }
+
+        .fps-counter, .memory-counter {
+            opacity: 0.7;
+        }
+
+        .fps-counter.good { color: #34C759; }
+        .fps-counter.okay { color: #FF9500; }
+        .fps-counter.poor { color: #FF3B30; }
+
+        /* Update Flash Modal */
+        .update-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10001;
+            backdrop-filter: blur(20px);
+        }
+
+        .update-modal.active {
+            display: flex;
+        }
+
+        .update-content {
+            background: #FFFFFF;
+            border-radius: 40px;
+            padding: 60px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .update-icon {
+            font-size: 64px;
+            margin-bottom: 30px;
+        }
+
+        .update-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1D1D1F;
+            margin-bottom: 20px;
+        }
+
+        .update-message {
+            font-size: 20px;
+            color: #86868B;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .update-progress {
+            width: 100%;
+            height: 6px;
+            background: #F5F5F7;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .update-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #007AFF, #5856D6);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Screen Cleaning Mode */
+        .cleaning-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #007AFF;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10002;
+            display: none;
+        }
+
+        .cleaning-mode.active {
+            display: flex;
+        }
+
+        .cleaning-timer {
+            font-size: 96px;
+            font-weight: 700;
+            margin-bottom: 40px;
+        }
+
+        .cleaning-message {
+            font-size: 32px;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        /* Debug Console */
+        .debug-console {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 9998;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .debug-console.active {
+            display: block;
+        }
+
+        .debug-entry {
+            padding: 10px;
+            border-bottom: 1px solid #F5F5F7;
+            font-family: 'SF Mono', monospace;
+            font-size: 12px;
+        }
+
+        .debug-entry.error {
+            color: #FF3B30;
+        }
+
+        .debug-entry.warning {
+            color: #FF9500;
+        }
+
+        .debug-entry.info {
+            color: #007AFF;
+        }
+
+        /* Haptic Visualizer */
+        .haptic-visualizer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9997;
+            display: none;
+        }
+
+        .haptic-visualizer.active {
+            display: block;
+            animation: hapticShake 0.3s ease-in-out;
+        }
+
+        @keyframes hapticShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Ticker */
+        .ticker {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 14px;
+            color: #86868B;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ticker.visible {
+            opacity: 1;
+        }
+
+        /* Night Shift Overlay */
+        .night-shift {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 166, 0, 0.1);
+            pointer-events: none;
+            z-index: 9996;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .night-shift.active {
+            opacity: 1;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .welcome-container {
-                min-width: auto;
-                width: 100%;
-            }
-            
-            .time-display {
-                font-size: 72px;
-                letter-spacing: -3px;
-            }
-            
-            .date-display {
-                font-size: 32px;
-            }
-            
-            .timer-display {
-                font-size: 64px;
-            }
-            
-            #dashboard {
+            .clock-view {
                 padding: 30px;
+            }
+            
+            #timeDisplay {
+                font-size: 120px;
+                letter-spacing: -6px;
+            }
+            
+            #dateDisplay {
+                font-size: 28px;
+            }
+            
+            .timer-view {
+                padding: 40px 20px;
+            }
+            
+            .timer-controls-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .timer-header {
+                font-size: 36px;
+            }
+            
+            #timerDisplay {
+                font-size: 96px;
             }
         }
     </style>
@@ -400,41 +702,93 @@
     <!-- Boot Sequence -->
     <div id="bootSequence">
         <div class="boot-logo">Canvas</div>
-        <div class="boot-message">System Initializing</div>
-        <div class="boot-input-container">
-            <input type="text" id="userNameInput" class="boot-input" placeholder="Enter Name" autofocus>
-            <button id="bootSubmit" class="boot-submit">Continue</button>
+        <div class="boot-progress">
+            <div class="boot-progress-bar"></div>
         </div>
-        <div id="welcomeMessage" class="welcome-message"></div>
+        <div class="boot-message" id="bootStatus">System Initializing...</div>
     </div>
 
-    <!-- Main Dashboard -->
-    <div id="dashboard">
-        <div class="header">
-            <div class="header-logo">Canvas</div>
-            <div class="welcome-container">
-                <div id="dashboardWelcome" class="welcome-text"></div>
+    <!-- Main Interface -->
+    <div id="mainInterface">
+        <!-- Hero Clock View -->
+        <div class="clock-view">
+            <div class="time-container">
+                <div id="timeDisplay">00:00 AM</div>
+                <div id="dateDisplay">Monday, January 1</div>
+            </div>
+            <div class="scroll-hint">
+                <div class="scroll-hint-icon"></div>
+                <div style="font-size: 16px; color: #86868B;">Scroll for Timer</div>
             </div>
         </div>
-        
-        <div class="main-content">
-            <div class="clock-section">
-                <div id="timeDisplay" class="time-display">00:00 AM</div>
-                <div id="dateDisplay" class="date-display">Monday, January 1</div>
+
+        <!-- Timer View -->
+        <div class="timer-view" id="timerView">
+            <div class="timer-header">Timer</div>
+            <div id="timerDisplay">00:00</div>
+            <div class="timer-controls-grid">
+                <button class="timer-btn" id="add1Min">+1 min</button>
+                <button class="timer-btn" id="add5Min">+5 min</button>
+                <button class="timer-btn primary" id="startTimer">Start</button>
+                <button class="timer-btn secondary" id="pauseTimer">Pause</button>
+                <button class="timer-btn" id="add10Min">+10 min</button>
+                <button class="timer-btn danger" id="clearTimer">Clear</button>
             </div>
-            
-            <div class="timer-section">
-                <div class="timer-title">Timer</div>
-                <div id="timerDisplay" class="timer-display">00:00</div>
-                <div class="timer-controls">
-                    <button class="timer-btn btn-blue" id="add1Min">+1m</button>
-                    <button class="timer-btn btn-orange" id="add5Min">+5m</button>
-                    <button class="timer-btn btn-green" id="startTimer">Start</button>
-                </div>
-                <button class="clear-btn" id="clearTimer">Clear</button>
+            <div style="margin-top: 40px; font-size: 18px; color: #86868B; text-align: center;">
+                Tap and hold anywhere on the clock to access Settings
             </div>
         </div>
     </div>
+
+    <!-- Settings Layer -->
+    <div class="settings-layer" id="settingsLayer">
+        <div class="settings-header">
+            <div class="settings-title">System Settings</div>
+            <button class="settings-close" id="closeSettings">×</button>
+        </div>
+        <div class="settings-content" id="settingsContent">
+            <!-- Settings are loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- Developer Overlay -->
+    <div class="dev-overlay" id="devOverlay">
+        <div class="dev-info">
+            <div class="fps-counter" id="fpsCounter">-- FPS</div>
+            <div class="memory-counter" id="memoryCounter">-- MB</div>
+            <div class="version-badge" id="versionBadge">v1.4.0</div>
+        </div>
+    </div>
+
+    <!-- Update Flash Modal -->
+    <div class="update-modal" id="updateModal">
+        <div class="update-content">
+            <div class="update-icon">⚡</div>
+            <div class="update-title">System Update</div>
+            <div class="update-message" id="updateMessage">Installing update...</div>
+            <div class="update-progress">
+                <div class="update-progress-bar" id="updateProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen Cleaning Mode -->
+    <div class="cleaning-mode" id="cleaningMode">
+        <div class="cleaning-timer" id="cleaningTimer">30</div>
+        <div class="cleaning-message">Screen cleaning mode</div>
+    </div>
+
+    <!-- Debug Console -->
+    <div class="debug-console" id="debugConsole"></div>
+
+    <!-- Haptic Visualizer -->
+    <div class="haptic-visualizer" id="hapticVisualizer"></div>
+
+    <!-- Ticker -->
+    <div class="ticker" id="ticker">Canvas v1.4.0 • Next: Weather Module •</div>
+
+    <!-- Night Shift Overlay -->
+    <div class="night-shift" id="nightShift"></div>
 
     <script src="renderer.js"></script>
 </body>
