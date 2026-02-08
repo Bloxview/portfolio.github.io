@@ -1,10 +1,8 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const chokidar = require('chokidar');
 
 let mainWindow;
-let isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
 
 // Ensure system directories exist
 function ensureSystemDirectories() {
@@ -26,10 +24,10 @@ function ensureSystemDirectories() {
   const configPath = path.join(userData, 'system', 'config', 'settings.json');
   if (!fs.existsSync(configPath)) {
     const defaultConfig = {
-      version: '1.4.0',
+      version: '1.4.1',
       display: {
         brightness: 100,
-        dimAfter: 120, // seconds
+        dimAfter: 120,
         nightShift: {
           enabled: false,
           startTime: '22:00',
@@ -39,7 +37,7 @@ function ensureSystemDirectories() {
       },
       time: {
         format: '12h',
-        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York'
       },
       animations: {
         intensity: 'medium',
@@ -81,25 +79,38 @@ function createWindow() {
   // Show window when content is ready
   mainWindow.once('ready-to-show', () => {
     mainWindow.show();
-    if (isDev) {
+    if (process.env.NODE_ENV === 'development') {
       mainWindow.webContents.openDevTools({ mode: 'undocked' });
     }
   });
 
-  // Watch for flash updates
+  // Simple file watcher without chokidar dependency
   const flashDir = path.join(app.getPath('userData'), 'system', 'flash');
-  const watcher = chokidar.watch(flashDir, {
-    ignored: /(^|[\/\\])\../,
-    persistent: true,
-    ignoreInitial: true
-  });
-
-  watcher.on('add', (filePath) => {
-    if (path.extname(filePath) === '.js') {
-      console.log(`Flash update detected: ${filePath}`);
-      mainWindow.webContents.send('flash-update', path.basename(filePath));
+  let lastCheck = 0;
+  
+  setInterval(() => {
+    const now = Date.now();
+    if (now - lastCheck > 2000) { // Check every 2 seconds
+      lastCheck = now;
+      fs.readdir(flashDir, (err, files) => {
+        if (!err) {
+          const jsFiles = files.filter(f => f.endsWith('.js'));
+          if (jsFiles.length > 0) {
+            mainWindow.webContents.send('flash-update', jsFiles[0]);
+            // Move the file after processing
+            jsFiles.forEach(file => {
+              const oldPath = path.join(flashDir, file);
+              const newPath = path.join(flashDir, 'processed', file);
+              if (!fs.existsSync(path.join(flashDir, 'processed'))) {
+                fs.mkdirSync(path.join(flashDir, 'processed'), { recursive: true });
+              }
+              fs.renameSync(oldPath, newPath);
+            });
+          }
+        }
+      });
     }
-  });
+  }, 2000);
 }
 
 app.whenReady().then(() => {
@@ -116,22 +127,26 @@ app.on('window-all-closed', function () {
 });
 
 // IPC handlers for system operations
-ipcMain.handle('get-config', () => {
+ipcMain.handle('get-config', async () => {
   const configPath = path.join(app.getPath('userData'), 'system', 'config', 'settings.json');
-  if (fs.existsSync(configPath)) {
-    return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  try {
+    if (fs.existsSync(configPath)) {
+      const data = await fs.promises.readFile(configPath, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Error reading config:', error);
   }
   return null;
 });
 
-ipcMain.handle('save-config', (event, config) => {
+ipcMain.handle('save-config', async (event, config) => {
   const configPath = path.join(app.getPath('userData'), 'system', 'config', 'settings.json');
-  fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-  return true;
-});
-
-ipcMain.handle('install-module', async (event, moduleName, moduleCode) => {
-  const modulePath = path.join(app.getPath('userData'), 'system', 'modules', `${moduleName}.js`);
-  fs.writeFileSync(modulePath, moduleCode);
-  return true;
+  try {
+    await fs.promises.writeFile(configPath, JSON.stringify(config, null, 2));
+    return true;
+  } catch (error) {
+    console.error('Error saving config:', error);
+    return false;
+  }
 });
